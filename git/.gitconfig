@@ -2,13 +2,19 @@
 	name = axelhamil
 	email = axel.hamilcaro-pro@outlook.fr
 	signingkey = ~/.ssh/id_github
-
+[init]
+	defaultBranch = main
 [commit]
 	gpgsign = true
-
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
 [gpg]
 	format = ssh
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
 [core]
 	editor = nvim
+[color]
+	ui = auto
