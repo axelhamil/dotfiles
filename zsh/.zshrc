@@ -21,9 +21,13 @@ plugins=(git gh kitty nvm podman postgres rust ssh thefuck themes tmux vscode zs
 
 source $ZSH/oh-my-zsh.sh
 
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 ## alias
 alias c="clear"
 alias e="exit"
+
+alias docker=podman
 
 alias n="nvim"
 alias t="tmux"
@@ -81,4 +85,12 @@ load-nvmrc
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+
+# pnpm
+export PNPM_HOME="/Users/axelhamilcaro/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
