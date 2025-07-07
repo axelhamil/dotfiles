@@ -1,0 +1,12 @@
+[user]
+name = axelhamil
+email = axel.hamilcaro-pro@outlook.fr
+signingkey = ~/.ssh/id_github
+
+[commit]
+gpgsign = true
+
+[gpg]
+format = ssh
+[gpg "ssh"]
+allowedSignersFile = ~/.ssh/allowed_signers
