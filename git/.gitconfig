@@ -1,12 +1,14 @@
 [user]
-name = axelhamil
-email = axel.hamilcaro-pro@outlook.fr
-signingkey = ~/.ssh/id_github
+	name = axelhamil
+	email = axel.hamilcaro-pro@outlook.fr
+	signingkey = ~/.ssh/id_github
 
 [commit]
-gpgsign = true
+	gpgsign = true
 
 [gpg]
-format = ssh
+	format = ssh
 [gpg "ssh"]
-allowedSignersFile = ~/.ssh/allowed_signers
+	allowedSignersFile = ~/.ssh/allowed_signers
+[core]
+	editor = nvim
