@@ -1,0 +1,50 @@
+# Fichiers système partout
+**/.DS_Store
+**/Thumbs.db
+**/Icon?
+
+# Historique shell partout
+**/.zsh_history
+**/.bash_history
+**/.fish_history
+
+# Clés SSH & GPG jamais versionner, quel que soit le niveau
+**/.ssh/
+**/*.key
+**/*.pem
+**/.gnupg/
+
+# Infos sensibles partout
+**/.npmrc
+**/.git-credentials
+**/.netrc
+**/.env
+**/.env.*
+
+# Cache, sessions & fichiers temporaires partout
+**/.cache/
+**/*.swp
+**/*.swo
+**/*.tmp
+**/*~
+
+# Node.js dans n’importe quel sous-dossier
+**/node_modules/
+**/package-lock.json
+**/pnpm-lock.yaml
+**/yarn.lock
+**/dist/
+**/build/
+**/*.tsbuildinfo
+
+# Gestionnaires et outils
+**/homebrew/
+**/nix/
+**/result/
+
+# Oh My Zsh git folder
+**/oh-my-zsh/.git/
+
+# Stow files
+**/.stow-local-ignore
+
