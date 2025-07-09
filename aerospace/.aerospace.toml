@@ -12,7 +12,7 @@ after-login-command = []
 after-startup-command = []
 
 # Start AeroSpace at login
-start-at-login = false
+start-at-login = true
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -21,7 +21,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 30
+accordion-padding = 0
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
 
@@ -56,12 +56,12 @@ automatically-unhide-macos-hidden-apps = false
 #                 See:
 #                 https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-    inner.horizontal = 0
-    inner.vertical =   0
-    outer.left =       0
-    outer.bottom =     0
-    outer.top =        0
-    outer.right =      0
+    inner.horizontal = 8
+    inner.vertical = 8
+    outer.bottom = 5
+    outer.top = [{ monitor.main = 5}, 5]
+    outer.right = 5
+    outer.left = 5
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -95,6 +95,7 @@ automatically-unhide-macos-hidden-apps = false
     #     activate
     # end tell'
     # '''
+    ctrl-enter= 'exec-and-forget open -a /Applications/kitty.app'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
     ctrl-slash = 'layout tiles horizontal vertical'
@@ -112,8 +113,6 @@ automatically-unhide-macos-hidden-apps = false
     cmd-shift-k = 'move up'
     cmd-shift-l = 'move right'
 
-    # See: https://nikitabobko.github.io/AeroSpace/commands#resize
-    ctrl-r = 'mode resize'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
     ctrl-1 = 'workspace 1'
@@ -137,6 +136,8 @@ automatically-unhide-macos-hidden-apps = false
     # See: https://nikitabobko.github.io/AeroSpace/commands#mode
     ctrl-shift-semicolon = 'mode service' # azerty -> m
 
+    # See: https://nikitabobko.github.io/AeroSpace/commands#resize
+    ctrl-r = 'mode resize'
 [mode.resize.binding]
     esc = ['reload-config', 'mode main']
     minus = 'resize smart -50'
