@@ -18,3 +18,8 @@
 	editor = nvim
 [color]
 	ui = auto
+[color "status"]
+    added = green bold
+    changed = magenta bold
+    untracked = cyan bold
+
