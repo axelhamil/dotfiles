@@ -1,0 +1,25 @@
+[user]
+	name = axelhamil
+	email = REDACTED@users.noreply.github.com
+	signingkey = ~/.ssh/id_github
+[init]
+	defaultBranch = main
+[commit]
+	gpgsign = true
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
+[core]
+	editor = vim
+[color]
+	ui = auto
+[color "status"]
+    added = green bold
+    changed = magenta bold
+    untracked = cyan bold
+
