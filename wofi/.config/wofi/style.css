@@ -1,0 +1,78 @@
+/* Wofi Catppuccin Mocha Theme */
+
+* {
+    font-family: "FiraCode Nerd Font", monospace;
+    font-size: 14px;
+}
+
+window {
+    margin: 0px;
+    border: 2px solid #45475a;
+    border-radius: 12px;
+    background-color: #1e1e2e;
+}
+
+#input {
+    margin: 12px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    color: #cdd6f4;
+    background-color: #313244;
+}
+
+#input:focus {
+    border: 2px solid #cba6f7;
+}
+
+#inner-box {
+    margin: 0px 12px 12px 12px;
+    border: none;
+    background-color: transparent;
+}
+
+#outer-box {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    background-color: transparent;
+}
+
+#scroll {
+    margin: 0px;
+    border: none;
+}
+
+#text {
+    margin: 0px;
+    padding: 4px 8px;
+    color: #cdd6f4;
+}
+
+#text:selected {
+    color: #1e1e2e;
+}
+
+#entry {
+    margin: 0px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+#entry:selected {
+    background-color: #cba6f7;
+}
+
+#entry:selected #text {
+    color: #1e1e2e;
+    font-weight: bold;
+}
+
+#img {
+    margin-right: 8px;
+}
+
+#img:selected {
+    background-color: transparent;
+}
