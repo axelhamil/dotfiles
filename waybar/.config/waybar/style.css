@@ -1,223 +1,724 @@
+/* ═══════════════════════════════════════════════
+   Catppuccin Mocha – Godlike Waybar v2
+   ═══════════════════════════════════════════════ */
+
+@define-color base    #1e1e2e;
+@define-color mantle  #181825;
+@define-color crust   #11111b;
+@define-color text    #cdd6f4;
+@define-color subtext0 #a6adc8;
+@define-color subtext1 #bac2de;
+@define-color surface0 #313244;
+@define-color surface1 #45475a;
+@define-color surface2 #585b70;
+@define-color overlay0 #6c7086;
+@define-color mauve   #cba6f7;
+@define-color blue    #89b4fa;
+@define-color sapphire #74c7ec;
+@define-color green   #a6e3a1;
+@define-color peach   #fab387;
+@define-color yellow  #f9e2af;
+@define-color red     #f38ba8;
+@define-color pink    #f5c2e7;
+@define-color flamingo #f2cdcd;
+@define-color teal    #94e2d5;
+@define-color rosewater #f5e0dc;
+@define-color lavender #b4befe;
+@define-color maroon  #eba0ac;
+
 * {
     border: none;
-    font-family: "FiraCode Nerd Font";
-    font-weight: bold;
-    font-size: 12px;
+    font-family: "FiraCode Nerd Font", "Font Awesome 6 Free";
+    font-weight: 600;
+    font-size: 13px;
     min-height: 0;
+    padding: 0;
+    margin: 0;
 }
 
 window#waybar {
-    background: rgba(21, 18, 27, 0);
-    color: #cdd6f4;
+    background: alpha(@crust, 0.85);
+    border-radius: 16px;
+    border: 1px solid alpha(@surface0, 0.6);
+    color: @text;
+    box-shadow: 0 2px 8px alpha(@crust, 0.5);
 }
 
 tooltip {
-    background: #000000;
-    border-radius: 7px;
-    border-width: 2.5px;
-    border-style: solid;
-    border-color: #8aadf4;
-    padding-right: 5px;
-    padding-left: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    background: @mantle;
+    border-radius: 12px;
+    border: 1px solid alpha(@mauve, 0.3);
+    padding: 10px 16px;
+    color: @text;
+}
+
+tooltip label {
+    color: @text;
+}
+
+/* ═══════════════════════════════════════════════
+   LEFT: Workspaces
+   ═══════════════════════════════════════════════ */
+
+#workspaces {
+    margin-left: 6px;
+    background: alpha(@surface0, 0.4);
+    border-radius: 12px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 0 4px;
+    border: 1px solid alpha(@surface1, 0.3);
 }
 
 #workspaces button {
-    color: whitesmoke;
-    margin-right: 5px;
-    padding-right: 0px;
-    padding-left: 0px;
-    border-radius: 0px;
+    color: @surface2;
+    padding: 0 8px;
+    margin: 3px 2px;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: transparent;
+}
+
+#workspaces button.empty {
+    color: alpha(@surface1, 0.5);
 }
 
 #workspaces button.active {
-    color: #89b4fa;
+    color: @crust;
+    background: @mauve;
+    box-shadow: 0 0 10px alpha(@mauve, 0.4);
+    font-weight: 700;
+}
+
+#workspaces button.visible {
+    color: @lavender;
+    background: alpha(@lavender, 0.1);
 }
 
 #workspaces button:hover {
-    color: #eba0ac;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-
-}
-
-#workspaces button.focused {
-    color: #a6adc8;
-    background: #eba0ac;
-    border-radius: 13px;
-}
-
-
-
-#workspaces button.persistent {
-    color: #f9e2af;
-}
-
-
-#workspaces button.empty {
-    color: #313244;
-}
-
-#workspaces button.active,
-#workspaces button.visible {
-    color: #cba6f7;
-    box-shadow: inset 0 -1px #1e1e2e;
+    color: @text;
+    background: alpha(@surface1, 0.6);
 }
 
 #workspaces button.urgent {
-    color: #f38ba8;
+    color: @crust;
+    background: @red;
+    animation: urgentPulse 0.8s ease-in-out infinite alternate;
 }
 
-#custom-weather,
-#custom-shutdown,
-#language,
-#cpu,
-#window,
-#clock,
-#pulseaudio,
-#pulseaudio.microphone,
-#workspaces,
-#tray,
-#network,
-#memory,
-#disk,
-#tray {
-    background: rgba(30, 30, 46, 0.75);
-    opacity: 1.0;
-    padding: 1.5px 7px 1.5px 7px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-right: 5px;
-    margin-left: 5px;
+@keyframes urgentPulse {
+    to {
+        box-shadow: 0 0 14px alpha(@red, 0.6);
+    }
 }
 
-#workspaces {
-    border-radius: 5px 13px 13px 5px;
-    margin-left: 5px;
-    padding-right: 0px;
-}
+/* ═══════════════════════════════════════════════
+   LEFT: Active Window
+   ═══════════════════════════════════════════════ */
 
 #window {
-    border-radius: 13px;
-    margin-left: 60px;
-    margin-right: 60px;
+    color: @subtext0;
+    font-size: 12px;
+    padding: 0 16px;
+    margin: 4px 0 4px 8px;
+    border-left: 2px solid alpha(@mauve, 0.3);
+    transition: all 0.3s ease;
 }
 
-#clock {
-    color: #a6e3a1;
-    border-radius: 0px;
-    margin-right: 0px;
-    margin-left: 0px;
+#window:hover {
+    color: @text;
+    border-left-color: @mauve;
 }
 
-#network {
-    color: #f9e2af;
-    border-radius: 7px 7px 7px 7px;
-    margin-right: 5px;
+/* ═══════════════════════════════════════════════
+   CENTER: Media + Cava
+   ═══════════════════════════════════════════════ */
+
+#mpris {
+    color: @text;
+    font-size: 12px;
+    padding: 0 14px;
+    font-style: italic;
+    transition: all 0.3s ease;
 }
 
-#custom-notifications {
-    color: #f9e2af;
-    border-radius: 7px 7px 7px 7px;
-    padding-left: 9px;
-    padding-right: 15px;
-    margin-left:  2px;
-    margin-right: 2px;
-
+#mpris.playing {
+    color: @rosewater;
 }
 
-#custom-updates {
-    color: #89b4fa;
-    border-radius: 7px 7px 7px 7px;
-    border-left:  0px;
-    border-right: 0px;
-    margin-left:  2px;
-    margin-right: 2px;
+#mpris.paused {
+    color: @overlay0;
+    font-style: normal;
 }
 
-#custom-player {
- color: #cba6f7;
- border-radius: 7px 7px 7px 7px;
- padding-left: 4px;
- margin-left:  5px;
- margin-right: 5px;
+#mpris:hover {
+    color: @pink;
 }
 
-#memory {
-    color: #f2cdcd;
-    border-radius: 0px 0px 0px 0px;
-    margin-left: 0px;
-    margin-right:0px;
+#custom-cava {
+    color: @mauve;
+    font-size: 13px;
+    padding: 0 6px;
+    letter-spacing: 0px;
+    transition: color 0.3s ease;
 }
 
-#disk {
-    color: #f9e2af;
-    border-radius: 0px 13px 13px 0px;
-    margin-left: 0px;
+/* ═══════════════════════════════════════════════
+   RIGHT: GameMode
+   ═══════════════════════════════════════════════ */
+
+#gamemode {
+    color: @crust;
+    background: @green;
+    padding: 0 12px;
+    margin: 5px 3px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    animation: gamePulse 2s ease-in-out infinite alternate;
 }
 
-
-#bluetooth {
-  color: #89b4fa;
-  border-radius: 0px 13px 13px 0px;
-  margin-left: 5px;
-  margin-right: 5px;
-} 
-
-#pulseaudio {
-  color: #89b4fa;
-  border-radius: 0px 0px 0px 0px;
-  margin-right: 0px;
-  margin-left: 0px;
+@keyframes gamePulse {
+    to { box-shadow: 0 0 12px alpha(@green, 0.5); }
 }
 
-#network {
-  color: #f9e2af;
-  border-radius: 0px 0px 0px 0px;
-  margin-right: 0px;
-  margin-left: 0px;
+/* ═══════════════════════════════════════════════
+   RIGHT: Drawers — Shared
+   ═══════════════════════════════════════════════ */
+
+#hardware,
+#connectivity,
+#audio {
+    background: alpha(@surface0, 0.45);
+    border-radius: 12px;
+    margin: 4px 2px;
+    padding: 0 2px;
+    border: 1px solid alpha(@surface1, 0.25);
+    transition: all 0.3s ease;
 }
 
-#pulseaudio.microphone {
-    color: #cba6f7;
-    border-radius: 0px 0px 0px 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+#hardware:hover,
+#connectivity:hover,
+#audio:hover {
+    background: alpha(@surface0, 0.65);
+    border-color: alpha(@surface1, 0.5);
 }
 
-#language {
-   border-radius: 13px 0px 0px 13px;
-   margin-right:0px;
+/* ── Hardware Drawer ── */
+
+/* ── Smart System Monitor (drawer trigger) ── */
+
+#custom-sysmon {
+    color: @peach;
+    padding: 0 11px;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+#custom-sysmon:hover {
+    color: @yellow;
+}
+
+#custom-sysmon.idle {
+    color: @peach;
+}
+
+#custom-sysmon.normal {
+    color: @peach;
+}
+
+#custom-sysmon.active {
+    color: @green;
+}
+
+#custom-sysmon.warning {
+    color: @yellow;
+    animation: sysWarn 1.5s ease-in-out infinite alternate;
+}
+
+#custom-sysmon.critical {
+    color: @red;
+    font-weight: 700;
+    animation: sysCrit 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes sysWarn {
+    to { text-shadow: 0 0 6px alpha(@yellow, 0.5); }
+}
+
+@keyframes sysCrit {
+    to { text-shadow: 0 0 10px alpha(@red, 0.6); }
+}
+
+#custom-gpu {
+    color: @green;
+    padding: 0 10px;
+    margin: 4px 1px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+#custom-gpu:hover {
+    color: @teal;
 }
 
 #cpu {
-    color: #fab387;
-   border-radius: 0px 0px 0px 0px;
-   padding-left:10px;
-   margin-right:0px;
-   margin-left: 0px;
+    color: @peach;
+    padding: 0 10px;
+    margin: 4px 1px;
+    font-weight: 600;
+    border-right: 1px solid alpha(@surface1, 0.25);
+    transition: color 0.3s ease;
 }
 
-#custom-weather {
-    color: #cba6f7;
-   margin-left: 0px;
-   margin-right: 0px;
-   padding: 0;
-   border-radius: 0px;
+#cpu:hover {
+    color: @yellow;
+}
+
+#memory {
+    color: @flamingo;
+    padding: 0 10px;
+    transition: color 0.3s ease;
+}
+
+#disk {
+    color: @yellow;
+    padding: 0 10px;
+    transition: color 0.3s ease;
+}
+
+#memory {
+    border-right: 1px solid alpha(@surface1, 0.25);
+}
+
+/* ── Connectivity Drawer ── */
+
+#network {
+    color: @teal;
+    padding: 0 11px;
+    transition: color 0.3s ease;
+}
+
+#network.disconnected {
+    color: @red;
+}
+
+#network.wifi {
+    color: @sapphire;
+}
+
+#network:hover {
+    color: @green;
+}
+
+#bluetooth {
+    color: @blue;
+    padding: 0 11px;
+    transition: color 0.3s ease;
+}
+
+#bluetooth.connected {
+    color: @lavender;
+}
+
+#bluetooth.disabled {
+    color: @surface2;
+}
+
+#bluetooth:hover {
+    color: @sapphire;
+}
+
+/* ── Network Speed ── */
+
+#custom-netspeed {
+    color: @subtext0;
+    padding: 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+#custom-netspeed.idle {
+    color: @surface2;
+}
+
+#custom-netspeed.active {
+    color: @teal;
+}
+
+#custom-netspeed.fast {
+    color: @green;
+}
+
+#custom-netspeed.blazing {
+    color: @mauve;
+    font-weight: 700;
+}
+
+#network,
+#custom-netspeed {
+    border-right: 1px solid alpha(@surface1, 0.25);
+}
+
+/* ── Audio Drawer ── */
+
+#audio {
+    background: alpha(@blue, 0.08);
+    border-color: alpha(@blue, 0.2);
+}
+
+#audio:hover {
+    background: alpha(@blue, 0.15);
+    border-color: alpha(@blue, 0.35);
+}
+
+#pulseaudio {
+    color: @text;
+    padding: 0 12px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+#pulseaudio:hover {
+    color: @blue;
+}
+
+#pulseaudio.muted {
+    color: @red;
+    font-weight: 600;
+}
+
+#custom-audio-format {
+    color: @sapphire;
+    padding: 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+#custom-audio-format.hires {
+    color: @green;
+}
+
+#custom-audio-format.ultra {
+    color: @mauve;
+}
+
+#pulseaudio.mic {
+    color: @lavender;
+    padding: 0 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+#pulseaudio.source-muted {
+    color: @overlay0;
+}
+
+#custom-patchbay {
+    color: @teal;
+    padding: 0 10px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+#custom-patchbay:hover {
+    color: @green;
+}
+
+#pulseaudio:not(.mic),
+#custom-audio-format,
+#pulseaudio.mic {
+    border-right: 1px solid alpha(@blue, 0.15);
+}
+
+/* ═══════════════════════════════════════════════
+   RIGHT: Standalone Modules
+   ═══════════════════════════════════════════════ */
+
+/* ── System Tray Drawer ── */
+
+#systray {
+    background: alpha(@surface0, 0.45);
+    border-radius: 12px;
+    margin: 4px 2px;
+    padding: 0 2px;
+    border: 1px solid alpha(@surface1, 0.25);
+    transition: all 0.3s ease;
+}
+
+#systray:hover {
+    background: alpha(@surface0, 0.65);
+    border-color: alpha(@surface1, 0.5);
+}
+
+#custom-tray-icon {
+    color: @lavender;
+    padding: 0 11px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+#custom-tray-icon.empty {
+    color: @surface2;
+    font-weight: 600;
+}
+
+#custom-tray-icon.active {
+    color: @lavender;
+}
+
+#custom-tray-icon:hover {
+    color: @mauve;
 }
 
 #tray {
-    margin-right: 0px;
-    border-radius: 13px 0 0 13px;
+    padding: 0 10px;
+    margin: 4px 2px;
 }
 
-#custom-shutdown {
-    color:#f38ba8;
-    border-radius: 0px 5px 5px 0px;
-    margin-left: 0px;
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background: alpha(@yellow, 0.15);
+    border-radius: 6px;
+}
+
+/* ── Arch Updates ── */
+
+#custom-updates {
+    color: @crust;
+    background: @green;
+    padding: 0 10px;
+    margin: 5px 3px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+#custom-updates:hover {
+    box-shadow: 0 0 10px alpha(@green, 0.4);
+}
+
+/* ── Notifications (Dunst) ── */
+
+#custom-dunst {
+    color: @subtext0;
+    padding: 0 8px;
+    margin: 4px 3px;
+    font-size: 14px;
+    min-width: 20px;
+    transition: all 0.3s ease;
+}
+
+#custom-dunst:hover {
+    color: @text;
+}
+
+#custom-dunst.idle {
+    color: @overlay0;
+}
+
+#custom-dunst.active {
+    color: @yellow;
+    font-weight: 700;
+    animation: notifPulse 2s ease-in-out infinite alternate;
+}
+
+#custom-dunst.dnd {
+    color: @crust;
+    background: @maroon;
+    border-radius: 8px;
+    padding: 0 10px;
+    font-weight: 700;
+}
+
+#custom-dunst.dnd:hover {
+    box-shadow: 0 0 10px alpha(@maroon, 0.4);
+}
+
+@keyframes notifPulse {
+    to { text-shadow: 0 0 8px alpha(@yellow, 0.6); }
+}
+
+/* ── OBS Indicator ── */
+
+#custom-obs {
+    padding: 0 10px;
+    margin: 5px 3px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+#custom-obs.inactive {
+    color: transparent;
     padding: 0;
-    padding-right: 10px;
-    padding-left: 10px;
+    margin: 0;
+}
+
+#custom-obs.standby {
+    color: @subtext0;
+}
+
+#custom-obs.live {
+    color: @crust;
+    background: @red;
+    animation: livePulse 1s ease-in-out infinite alternate;
+}
+
+#custom-obs.live-rec {
+    color: @crust;
+    background: @red;
+    animation: livePulse 0.6s ease-in-out infinite alternate;
+}
+
+#custom-obs.recording {
+    color: @crust;
+    background: @peach;
+    animation: recPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes livePulse {
+    to { box-shadow: 0 0 14px alpha(@red, 0.7); }
+}
+
+@keyframes recPulse {
+    to { box-shadow: 0 0 12px alpha(@peach, 0.5); }
+}
+
+/* ── Docker Status ── */
+
+#custom-docker {
+    color: @surface2;
+    padding: 0 8px;
+    margin: 4px 3px;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+#custom-docker:hover {
+    color: @text;
+}
+
+#custom-docker.off {
+    color: @surface2;
+}
+
+#custom-docker.idle {
+    color: @sapphire;
+}
+
+#custom-docker.active {
+    color: @blue;
+    font-weight: 700;
+}
+
+/* ── Night Light (hyprsunset) ── */
+
+#custom-nightlight {
+    color: @surface2;
+    padding: 0 10px;
+    margin: 4px 0;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+#custom-nightlight:hover {
+    color: @text;
+}
+
+#custom-nightlight.on {
+    color: @yellow;
+    text-shadow: 0 0 8px alpha(@yellow, 0.4);
+}
+
+#custom-nightlight.off {
+    color: @surface2;
+}
+
+/* ── GPU Classes ── */
+
+#custom-gpu.warning {
+    color: @yellow;
+}
+
+#custom-gpu.critical {
+    color: @red;
+    font-weight: 700;
+}
+
+/* ── Idle Inhibitor ── */
+
+#idle_inhibitor {
+    color: @surface2;
+    padding: 0 10px;
+    margin: 4px 0;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+#idle_inhibitor.activated {
+    color: @yellow;
+    text-shadow: 0 0 8px alpha(@yellow, 0.5);
+}
+
+#idle_inhibitor:hover {
+    color: @subtext1;
+}
+
+/* ── Weather ── */
+
+#custom-weather {
+    color: @lavender;
+    padding: 0 12px;
+    margin: 4px 0;
+    border-right: 1px solid alpha(@surface1, 0.25);
+    transition: color 0.3s ease;
+}
+
+#custom-weather:hover {
+    color: @mauve;
+}
+
+/* ── Clock ── */
+
+#clock {
+    color: @text;
+    font-weight: 700;
+    padding: 0 14px;
+    margin: 4px 2px;
+    background: alpha(@mauve, 0.1);
+    border: 1px solid alpha(@mauve, 0.15);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+#clock:hover {
+    background: alpha(@mauve, 0.2);
+    border-color: alpha(@mauve, 0.3);
+}
+
+/* ── Shutdown ── */
+
+#custom-shutdown {
+    color: @red;
+    padding: 0 14px 0 10px;
+    margin: 5px 5px 5px 2px;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+#custom-shutdown:hover {
+    color: @crust;
+    background: @red;
+    box-shadow: 0 0 12px alpha(@red, 0.4);
 }

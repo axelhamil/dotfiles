@@ -22,7 +22,7 @@ button {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 45%;
-    
+
     margin: 25px;
     padding-top: 85px;
     min-width: 130px;
@@ -31,7 +31,7 @@ button {
     transition:
         background-color 0.20s ease,
         box-shadow 0.20s ease,
-        background-size 0.25s ease, 
+        background-size 0.25s ease,
         opacity 0.20s ease;
 }
 
@@ -45,56 +45,31 @@ button label {
 /* Hover : zoom + disparition du texte */
 button:hover {
     background-color: rgb(166, 227, 161);
+    background-size: 60%;
 }
 
 button:hover label {
-    opacity: 0; /* fade-out du texte */
-}
-
-/* Zoom de l’icône (seulement l’image, sans casser le layout) */
-button:hover {
-    background-size: 60%; /* augmente l’icône au hover */
+    opacity: 0;
 }
 
 /* Icônes */
-#shutdown {
-    background-image: image(url("./icons/power.png"));
+#lock {
+    background-image: image(url("./icons/lock.png"));
 }
-#shutdown:hover {
-  background-image: image(url("./icons/power-hover.png"));
-}
-
-#logout {
-    background-image: image(url("./icons/logout.png"));
-}
-#logout:hover {
-  background-image: image(url("./icons/logout-hover.png"));
+#lock:hover {
+    background-image: image(url("./icons/lock-hover.png"));
 }
 
 #reboot {
     background-image: image(url("./icons/restart.png"));
 }
 #reboot:hover {
-  background-image: image(url("./icons/restart-hover.png"));
+    background-image: image(url("./icons/restart-hover.png"));
 }
 
-#suspend {
-    background-image: image(url("./icons/sleep.png"));
+#shutdown {
+    background-image: image(url("./icons/power.png"));
 }
-#suspend:hover {
-  background-image: image(url("./icons/sleep-hover.png"));
-}
-
-#lock {
-    background-image: image(url("./icons/lock.png"));
-}
-#lock:hover {
-  background-image: image(url("./icons/lock-hover.png"));
-}
-
-#hibernate {
-    background-image: image(url("./icons/hibernate.png"));
-}
-#hibernate:hover {
-  background-image: image(url("./icons/hibernate-hover.png"));
+#shutdown:hover {
+    background-image: image(url("./icons/power-hover.png"));
 }

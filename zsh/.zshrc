@@ -14,6 +14,7 @@ plugins=(
   kitty nvm podman postgres
   ssh themes
   tmux vscode
+  fzf
   zsh-autosuggestions zsh-syntax-highlighting alias-finder
 )
 
@@ -28,6 +29,9 @@ source $ZSH/oh-my-zsh.sh
 source ~/.config/zsh/aliases.zsh
 source ~/.config/zsh/path.zsh
 source ~/.config/zsh/nvm.zsh
+
+# zoxide (smart cd)
+eval "$(zoxide init zsh)"
 
 # Powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

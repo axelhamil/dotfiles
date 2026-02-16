@@ -1,0 +1,159 @@
+/* Walker — Catppuccin Mocha */
+
+@define-color window_bg_color #1e1e2e;
+@define-color accent_bg_color #cba6f7;
+@define-color theme_fg_color #cdd6f4;
+@define-color error_bg_color #f38ba8;
+@define-color error_fg_color #cdd6f4;
+@define-color surface0 #313244;
+@define-color surface1 #45475a;
+@define-color subtext0 #a6adc8;
+@define-color crust #11111b;
+
+* {
+  all: unset;
+}
+
+popover {
+  background: lighter(@window_bg_color);
+  border: 1px solid @surface1;
+  border-radius: 18px;
+  padding: 10px;
+}
+
+.normal-icons {
+  -gtk-icon-size: 16px;
+}
+
+.large-icons {
+  -gtk-icon-size: 32px;
+}
+
+scrollbar {
+  opacity: 0;
+}
+
+.box-wrapper {
+  box-shadow:
+    0 19px 38px rgba(0, 0, 0, 0.3),
+    0 15px 12px rgba(0, 0, 0, 0.22);
+  background: alpha(@window_bg_color, 0.9);
+  padding: 20px;
+  border-radius: 20px;
+  border: 2px solid alpha(@accent_bg_color, 0.4);
+}
+
+.preview-box,
+.elephant-hint,
+.placeholder {
+  color: @subtext0;
+}
+
+.search-container {
+  border-radius: 10px;
+}
+
+.input placeholder {
+  opacity: 0.5;
+}
+
+.input selection {
+  background: alpha(@accent_bg_color, 0.3);
+}
+
+.input {
+  caret-color: @theme_fg_color;
+  background: @surface0;
+  padding: 12px 16px;
+  color: @theme_fg_color;
+  border-radius: 10px;
+  font-family: "FiraCode Nerd Font", monospace;
+  font-size: 15px;
+}
+
+.input:focus,
+.input:active {
+  background: lighter(@surface0);
+}
+
+.list {
+  color: @theme_fg_color;
+  font-family: "FiraCode Nerd Font", monospace;
+}
+
+.item-box {
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.item-quick-activation {
+  background: alpha(@accent_bg_color, 0.15);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+child:selected .item-box,
+row:selected .item-box {
+  background: alpha(@accent_bg_color, 0.25);
+}
+
+.item-subtext {
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+.providerlist .item-subtext {
+  font-size: unset;
+  opacity: 0.75;
+}
+
+.item-image-text {
+  font-size: 28px;
+}
+
+.preview {
+  border: 1px solid alpha(@surface1, 0.5);
+  border-radius: 10px;
+  color: @theme_fg_color;
+}
+
+.calc .item-text {
+  font-size: 24px;
+}
+
+.symbols .item-image {
+  font-size: 24px;
+}
+
+.keybinds {
+  padding-top: 10px;
+  border-top: 1px solid @surface1;
+  font-size: 12px;
+  color: @subtext0;
+}
+
+.keybind-button {
+  opacity: 0.5;
+}
+
+.keybind-button:hover {
+  opacity: 0.75;
+}
+
+.keybind-bind {
+  text-transform: lowercase;
+  opacity: 0.35;
+}
+
+.keybind-label {
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: 1px solid @subtext0;
+}
+
+.error {
+  padding: 10px;
+  background: @error_bg_color;
+  color: @error_fg_color;
+  border-radius: 8px;
+}
