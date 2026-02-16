@@ -29,8 +29,6 @@ source $ZSH/oh-my-zsh.sh
 source ~/.config/zsh/aliases.zsh
 source ~/.config/zsh/path.zsh
 source ~/.config/zsh/nvm.zsh
-source ~/.config/zsh/ollama.zsh
-
 # zoxide (smart cd)
 eval "$(zoxide init zsh)"
 
