@@ -11,7 +11,7 @@ zstyle ':omz:update' mode auto
 
 plugins=(
   git gh
-  kitty nvm podman postgres
+  kitty podman postgres
   ssh themes
   tmux vscode
   fzf

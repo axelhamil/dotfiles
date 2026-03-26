@@ -24,8 +24,8 @@ alias lt="eza -la --icons --tree --level=2"
 # bat (remplace cat)
 alias cat="bat --paging=never"
 
-# fd (remplace find)
-alias find="fd"
+# fd
+alias f="fd"
 
 # ripgrep
 alias grep="rg"

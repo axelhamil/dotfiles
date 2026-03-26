@@ -381,13 +381,13 @@
 
     "custom/shutdown": {
       "format": "⏻",
-      "on-click": "wlogout -b 3 -B 500 -T 500",
+      "on-click": "wlogout -b 5 -B 500 -T 500",
       "tooltip": false
     }
   },
 
   // ═══════════════════════════════════════════════
-  // SECONDARY BAR — HDMI-A-3 (écran du haut)
+  // SECONDARY BAR — HDMI-A-3 (écran de droite)
   // ═══════════════════════════════════════════════
   {
     "output": "HDMI-A-3",

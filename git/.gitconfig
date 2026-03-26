@@ -15,7 +15,7 @@
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
 [core]
-	editor = vim
+	editor = nvim
 	pager = delta
 [interactive]
 	diffFilter = delta --color-only
