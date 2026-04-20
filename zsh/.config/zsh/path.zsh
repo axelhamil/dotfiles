@@ -6,9 +6,15 @@ export PATH="$HOME/.local/share/JetBrains/Toolbox/scripts:$PATH"
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"
 
-# Android SDK
-export ANDROID_HOME="$HOME/Android/Sdk"
+# Android SDK (XDG location)
+export ANDROID_HOME="$HOME/.local/share/android/sdk"
+export ANDROID_SDK_ROOT="$ANDROID_HOME"
+export ANDROID_USER_HOME="$HOME/.config/android"
 export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
+
+# Go (XDG location)
+export GOPATH="$HOME/.local/share/go"
+export PATH="$GOPATH/bin:$PATH"
 
 # Bun
 export BUN_INSTALL="$HOME/.bun"
