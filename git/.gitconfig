@@ -6,10 +6,25 @@
 	defaultBranch = main
 [commit]
 	gpgsign = true
+	verbose = true
 [pull]
 	rebase = true
 [push]
 	autoSetupRemote = true
+[fetch]
+	prune = true
+[rerere]
+	enabled = true
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
+[branch]
+	sort = -committerdate
+[column]
+	ui = auto
+[help]
+	autocorrect = prompt
 [gpg]
 	format = ssh
 [gpg "ssh"]
@@ -28,6 +43,7 @@
 	conflictstyle = zdiff3
 [diff]
 	colorMoved = default
+	algorithm = histogram
 [color]
 	ui = auto
 [color "status"]
