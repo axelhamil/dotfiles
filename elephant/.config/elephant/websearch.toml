@@ -1,0 +1,103 @@
+always_show_default = true
+command = 'xdg-open'
+engines_as_actions = true
+history = true
+history_when_empty = false
+text_prefix = 'Search: '
+
+[Config]
+hide_from_providerlist = false
+icon = 'applications-internet'
+min_score = 20
+name_pretty = ''
+
+[[entries]]
+default = true
+icon = ''
+name = 'DuckDuckGo'
+prefix = 'd'
+url = 'https://duckduckgo.com/?q=%TERM%'
+
+[[entries]]
+default = false
+icon = ''
+name = 'Google'
+prefix = 'g'
+url = 'https://www.google.com/search?q=%TERM%'
+
+[[entries]]
+default = false
+icon = ''
+name = 'GitHub'
+prefix = 'gh'
+url = 'https://github.com/search?q=%TERM%&type=repositories'
+
+[[entries]]
+default = false
+icon = ''
+name = 'npm'
+prefix = 'n'
+url = 'https://www.npmjs.com/search?q=%TERM%'
+
+[[entries]]
+default = false
+icon = ''
+name = 'MDN'
+prefix = 'm'
+url = 'https://developer.mozilla.org/en-US/search?q=%TERM%'
+
+[[entries]]
+default = false
+icon = ''
+name = 'AUR'
+prefix = 'a'
+url = 'https://aur.archlinux.org/packages?K=%TERM%'
+
+[[entries]]
+default = false
+icon = ''
+name = 'YouTube'
+prefix = 'y'
+url = 'https://www.youtube.com/results?search_query=%TERM%'
+
+[[entries]]
+default = false
+icon = ''
+name = 'Google Maps'
+prefix = 'map'
+url = 'https://www.google.com/maps/search/%TERM%'
+
+[[entries]]
+default = false
+icon = ''
+name = 'ChatGPT'
+prefix = 'c'
+url = 'https://chat.openai.com/?q=%TERM%'
+
+[[entries]]
+default = false
+icon = ''
+name = 'Claude'
+prefix = 'cl'
+url = 'https://claude.ai/new?q=%TERM%'
+
+[[entries]]
+default = false
+icon = ''
+name = 'crates.io'
+prefix = 'cr'
+url = 'https://crates.io/search?q=%TERM%'
+
+[[entries]]
+default = false
+icon = ''
+name = 'DevDocs'
+prefix = 'dd'
+url = 'https://devdocs.io/#q=%TERM%'
+
+[[entries]]
+default = false
+icon = ''
+name = 'Stack Overflow'
+prefix = 'so'
+url = 'https://stackoverflow.com/search?q=%TERM%'
