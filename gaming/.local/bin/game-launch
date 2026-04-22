@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -lt 1 ]]; then
+    echo "usage: game-launch <executable> [args...]" >&2
+    exit 1
+fi
+
+GAMEMODE=$(command -v gamemoderun || true)
+HUD=$(command -v mangohud || true)
+
+exec env \
+    PROTON_ENABLE_NVAPI=1 \
+    DXVK_NVAPI_DRS_NGX_DLSS_FG_OVERRIDE=on \
+    __GL_GSYNC_ALLOWED=1 \
+    __GL_VRR_ALLOWED=1 \
+    $GAMEMODE $HUD "$@"

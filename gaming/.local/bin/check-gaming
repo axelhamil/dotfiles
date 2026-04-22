@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+set -u
+
+hdr() { printf '\n\033[1;35m── %s ──\033[0m\n' "$1"; }
+ok()  { printf '  \033[32m✓\033[0m %s\n' "$1"; }
+ko()  { printf '  \033[31m✗\033[0m %s\n' "$1"; }
+inf() { printf '    %s\n' "$1"; }
+
+hdr "Kernel"
+inf "$(uname -r)"
+
+hdr "NVIDIA"
+if command -v nvidia-smi &>/dev/null; then
+    nvidia-smi --query-gpu=name,driver_version,memory.total,power.limit --format=csv,noheader | sed 's/^/    /'
+else
+    ko "nvidia-smi absent"
+fi
+
+hdr "Paquets clés"
+for pkg in nvidia-open-dkms nvidia-utils lib32-nvidia-utils gamemode mangohud; do
+    if pacman -Q "$pkg" &>/dev/null; then
+        ok "$(pacman -Q "$pkg")"
+    else
+        ko "$pkg non installé"
+    fi
+done
+
+hdr "Gamemode"
+if command -v gamemoded &>/dev/null; then
+    inf "$(gamemoded -s 2>&1 || true)"
+else
+    ko "gamemoded absent"
+fi
+
+hdr "Shader cache NVIDIA"
+cache_dir="$HOME/.cache/nvidia/GLCache"
+if [[ -d "$cache_dir" ]]; then
+    inf "taille  : $(du -sh "$cache_dir" 2>/dev/null | cut -f1)"
+    inf "limit   : ${__GL_SHADER_DISK_CACHE_SIZE:-unset (default 1 Go)}"
+else
+    inf "pas encore créé"
+fi
+
+hdr "Moniteurs Hyprland"
+if command -v hyprctl &>/dev/null; then
+    hyprctl monitors 2>/dev/null | awk '
+        /^Monitor/ { name=$2 }
+        /^\t[0-9]+x[0-9]+@/ { res=$1 }
+        /vrr:/ { vrr=$2 }
+        /activelyTearing:/ { tear=$2 }
+        /dpmsStatus:/ { print "    " name "  " res "  vrr=" vrr "  tearing=" tear }
+    '
+else
+    ko "hyprctl absent"
+fi
+
+hdr "Variables gaming actives"
+for v in __GL_SHADER_DISK_CACHE_SIZE __GL_GSYNC_ALLOWED __GL_VRR_ALLOWED GBM_BACKEND __GLX_VENDOR_LIBRARY_NAME; do
+    val="${!v:-}"
+    if [[ -n "$val" ]]; then
+        ok "$v=$val"
+    else
+        ko "$v unset"
+    fi
+done
+
+hdr "Hyprland gaming options"
+for opt in general:allow_tearing render:direct_scanout cursor:no_hardware_cursors misc:vrr; do
+    if command -v hyprctl &>/dev/null; then
+        val=$(hyprctl getoption "$opt" 2>/dev/null | awk '/^(int|custom type):/ {print $2}')
+        inf "$opt = $val"
+    fi
+done
+
+hdr "Vulkan"
+if command -v vulkaninfo &>/dev/null; then
+    vulkaninfo --summary 2>/dev/null | grep -E "deviceName|driverName|apiVersion" | head -4 | sed 's/^/    /'
+else
+    inf "vulkaninfo absent"
+fi
+
+echo
