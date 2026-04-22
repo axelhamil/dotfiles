@@ -1,5 +1,22 @@
 {
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    }
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "git_panel": {
+    "dock": "right"
+  },
   "agent": {
+    "flexible": true,
+    "sidebar_side": "right",
+    "dock": "right",
     "enabled": true
   },
   "autosave": "on_focus_change",
@@ -95,6 +112,7 @@
   },
   "linked_edits": true,
   "project_panel": {
+    "dock": "left",
     "bold_folder_labels": true,
     "git_status": true,
     "indent_size": 20
