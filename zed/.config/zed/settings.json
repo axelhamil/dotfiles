@@ -1,4 +1,5 @@
 {
+  "cli_default_open_behavior": "existing_window",
   "agent_servers": {
     "claude-acp": {
       "type": "registry"
@@ -107,9 +108,6 @@
   "inlay_hints": {
     "enabled": false
   },
-  "inline_blame": {
-    "enabled": true
-  },
   "linked_edits": true,
   "project_panel": {
     "dock": "left",
@@ -117,13 +115,55 @@
     "git_status": true,
     "indent_size": 20
   },
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings",
+    "**/node_modules",
+    "**/.next",
+    "**/.turbo",
+    "**/.tanstack",
+    "**/.cache",
+    "**/.parcel-cache",
+    "**/dist",
+    "**/build",
+    "**/out",
+    "**/coverage",
+    "**/.nuxt",
+    "**/.output",
+    "**/.svelte-kit",
+    "**/.astro",
+    "**/.vercel",
+    "**/.netlify",
+    "**/target",
+    "**/__pycache__",
+    "**/.venv",
+    "**/venv",
+    "**/.pytest_cache",
+    "**/.mypy_cache",
+    "**/.ruff_cache",
+    "**/.gradle",
+    "**/.idea",
+    "**/.vscode",
+    "**/.android",
+    "**/android/app/build",
+    "**/ios/Pods",
+    "**/ios/build",
+    "**/.expo",
+    "**/.bundle",
+    "**/Pods",
+    "**/DerivedData",
+    "**/*.tsbuildinfo"
+  ],
   "remove_trailing_whitespace_on_save": true,
   "restore_on_startup": "last_session",
   "sticky_scroll": {
     "enabled": true
-  },
-  "tab_bar": {
-    "show_pinned_tabs_in_separate_row": true
   },
   "tabs": {
     "file_icons": true,
@@ -157,5 +197,59 @@
   "ui_font_size": 16,
   "which_key": {
     "enabled": true
+  },
+  "minimap": {
+    "show": "auto",
+    "thumb": "always",
+    "current_line_highlight": "line"
+  },
+  "scrollbar": {
+    "show": "auto",
+    "git_diff": true,
+    "search_results": true,
+    "selected_symbol": true,
+    "diagnostics": "all"
+  },
+  "current_line_highlight": "all",
+  "selection_highlight": true,
+  "vertical_scroll_margin": 8,
+  "scroll_beyond_last_line": "off",
+  "hover_popover_delay": 200,
+  "diagnostics": {
+    "inline": {
+      "enabled": true,
+      "update_debounce_ms": 150,
+      "padding": 4,
+      "min_column": 0,
+      "max_severity": "warning"
+    }
+  },
+  "indent_guides": {
+    "enabled": true,
+    "coloring": "indent_aware"
+  },
+  "wrap_guides": [80, 120],
+  "redact_private_values": true,
+  "preview_tabs": {
+    "enabled": true,
+    "enable_preview_from_file_finder": true,
+    "enable_preview_from_code_navigation": true
+  },
+  "expand_excerpt_lines": 5,
+  "use_smartcase_search": true,
+  "confirm_quit": false,
+  "auto_install_extensions": {
+    "html": true
+  },
+  "tab_bar": {
+    "show_pinned_tabs_in_separate_row": true,
+    "show_nav_history_buttons": false
+  },
+  "git": {
+    "inline_blame": {
+      "enabled": true,
+      "delay_ms": 600,
+      "show_commit_summary": true
+    }
   }
 }
