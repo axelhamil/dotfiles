@@ -167,6 +167,9 @@
   "effortLevel": "xhigh",
   "promptSuggestionEnabled": true,
   "skipDangerousModePermissionPrompt": true,
+  "autoCompactEnabled": false,
+  "teammateMode": "tmux",
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
   "mcpServers": {
     "docker": {
@@ -175,7 +178,5 @@
       ],
       "command": "uvx"
     }
-  },
-  "teammateMode": "tmux",
-  "skipAutoPermissionPrompt": true
+  }
 }
