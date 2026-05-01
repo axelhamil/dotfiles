@@ -4,5 +4,11 @@
     "bindings": {
       "ctrl-enter": "assistant::InlineAssist"
     }
+  },
+  {
+    "context": "Editor && extension == md",
+    "bindings": {
+      "ctrl-shift-m": ["task::Spawn", { "task_name": "Markdown preview (grip)" }]
+    }
   }
 ]
