@@ -1,6 +1,7 @@
+[include]
+	path = ~/.gitconfig.local
 [user]
 	name = axelhamil
-	email = REDACTED@users.noreply.github.com
 	signingkey = ~/.ssh/id_github
 [init]
 	defaultBranch = main
