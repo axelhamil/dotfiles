@@ -1,0 +1,1 @@
+SUBSYSTEM=="video4linux", ATTRS{idVendor}=="3564", ATTRS{idProduct}=="fef9", ACTION=="add", RUN+="/usr/local/bin/obsbot-tune.sh"
