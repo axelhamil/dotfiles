@@ -1,9 +1,9 @@
 [
   // ═══════════════════════════════════════════════
-  // MAIN BAR — DP-5 (écran principal)
+  // MAIN BAR — DP-2 (écran principal)
   // ═══════════════════════════════════════════════
   {
-    "output": "DP-5",
+    "output": "DP-2",
     "layer": "top",
     "position": "top",
     "height": 38,
@@ -387,10 +387,10 @@
   },
 
   // ═══════════════════════════════════════════════
-  // SECONDARY BAR — HDMI-A-3 (écran de droite)
+  // SECONDARY BAR — HDMI-A-1 (écran de droite)
   // ═══════════════════════════════════════════════
   {
-    "output": "HDMI-A-3",
+    "output": "HDMI-A-1",
     "layer": "top",
     "position": "top",
     "height": 38,
