@@ -1,0 +1,80 @@
+{
+  "$schema": "/etc/xdg/swaync/configSchema.json",
+  "positionX": "right",
+  "positionY": "top",
+  "layer": "overlay",
+  "control-center-layer": "top",
+  "control-center-positionX": "none",
+  "control-center-positionY": "none",
+  "control-center-width": 460,
+  "control-center-height": -1,
+  "control-center-margin-top": 8,
+  "control-center-margin-bottom": 0,
+  "control-center-margin-right": 8,
+  "control-center-margin-left": 0,
+  "control-center-exclusive-zone": true,
+  "fit-to-screen": false,
+  "notification-window-width": 380,
+  "notification-window-height": -1,
+  "notification-2fa-action": true,
+  "notification-inline-replies": false,
+  "notification-grouping": true,
+  "timeout": 6,
+  "timeout-low": 3,
+  "timeout-critical": 0,
+  "image-visibility": "when-available",
+  "transition-time": 200,
+  "hide-on-clear": false,
+  "hide-on-action": true,
+  "script-fail-notify": true,
+  "relative-timestamps": true,
+  "ignore-gtk-theme": true,
+  "cssPriority": "user",
+  "keyboard-shortcuts": true,
+  "layer-shell-cover-screen": true,
+  "widgets": [
+    "inhibitors",
+    "title",
+    "dnd",
+    "mpris",
+    "volume",
+    "notifications"
+  ],
+  "widget-config": {
+    "inhibitors": {
+      "text": "Inhibiteurs",
+      "clear-all-button": true,
+      "button-text": "Tout effacer"
+    },
+    "title": {
+      "text": "Notifications",
+      "clear-all-button": true,
+      "button-text": "Tout effacer"
+    },
+    "dnd": {
+      "text": "Ne pas déranger"
+    },
+    "mpris": {
+      "image-size": 96,
+      "image-radius": 12,
+      "autohide": true,
+      "show-album-art": "always",
+      "loop-carousel": false,
+      "blacklist": []
+    },
+    "volume": {
+      "label": "Volume",
+      "show-per-app": true,
+      "show-per-app-icon": true,
+      "show-per-app-label": false,
+      "expand-per-app": false,
+      "animation-type": "slide_down",
+      "animation-duration": 250
+    },
+    "notifications": {
+      "ignored-applications": [],
+      "strip-markup": true
+    }
+  },
+  "scripts": {}
+}
