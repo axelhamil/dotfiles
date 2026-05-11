@@ -47,3 +47,4 @@ eval "$(zoxide init zsh)"
 
 # Powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock

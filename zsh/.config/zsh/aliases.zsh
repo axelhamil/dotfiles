@@ -5,6 +5,7 @@ alias e="exit"
 
 alias n="nvim"
 alias t="tmux"
+alias mail="aerc"
 
 alias g="git"
 alias ga="git add ."

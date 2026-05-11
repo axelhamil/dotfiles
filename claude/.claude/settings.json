@@ -178,5 +178,6 @@
       ],
       "command": "uvx"
     }
-  }
+  },
+  "agentPushNotifEnabled": false
 }
