@@ -3,4 +3,5 @@
 @rules/20-context.md
 @rules/30-tools.md
 @rules/40-quality.md
+@rules/50-memory.md
 @RTK.md
