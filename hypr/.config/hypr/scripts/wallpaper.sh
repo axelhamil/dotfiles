@@ -1,12 +1,10 @@
 #!/bin/bash
-# Script pour changer de wallpaper avec awww
 
 WALLPAPER_DIR="$HOME/Images/wallpapers"
-TRANSITION_TYPE="${1:-wipe}"
+TRANSITION_TYPE="wipe"
 TRANSITION_FPS=60
 TRANSITION_DURATION=2
 
-# Si un fichier est passé en argument, l'utiliser
 if [[ -f "$1" ]]; then
     awww img "$1" \
         --transition-type "$TRANSITION_TYPE" \
@@ -15,7 +13,6 @@ if [[ -f "$1" ]]; then
     exit 0
 fi
 
-# Sinon, sélectionner aléatoirement un wallpaper
 if [[ -d "$WALLPAPER_DIR" ]]; then
     WALLPAPER=$(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" \) | shuf -n 1)
 
