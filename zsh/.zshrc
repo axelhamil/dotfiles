@@ -11,7 +11,7 @@ zstyle ':omz:update' mode auto
 
 plugins=(
   git gh
-  kitty podman postgres
+  kitty docker postgres
   ssh themes
   tmux vscode
   fzf
@@ -47,4 +47,3 @@ eval "$(zoxide init zsh)"
 
 # Powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-export DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock
