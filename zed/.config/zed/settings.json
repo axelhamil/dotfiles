@@ -1,10 +1,16 @@
 {
+  "diff_view_style": "split",
+  "lsp_document_colors": "background",
+  "code_lens": "menu",
   "lsp": {
     "vtsls": {
       "settings": {
         "typescript": {
           "updateImportsOnFileMove": {
             "enabled": "always"
+          },
+          "tsserver": {
+            "maxTsServerMemory": 8192
           }
         },
         "javascript": {
@@ -37,7 +43,7 @@
     "dock": "right",
     "enabled": true
   },
-  "autosave": "on_focus_change",
+  "autosave": "off",
   "base_keymap": "JetBrains",
   "buffer_font_family": "FiraCode Nerd Font Mono",
   "buffer_font_features": {
@@ -73,7 +79,7 @@
   "languages": {
     "TypeScript": {
       "language_servers": ["biome", "vtsls", "!typescript-language-server", "!eslint", "..."],
-      "formatter": "language_server",
+      "formatter": { "language_server": { "name": "biome" } },
       "code_actions_on_format": {
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true
@@ -81,7 +87,7 @@
     },
     "TSX": {
       "language_servers": ["biome", "vtsls", "!typescript-language-server", "!eslint", "..."],
-      "formatter": "language_server",
+      "formatter": { "language_server": { "name": "biome" } },
       "code_actions_on_format": {
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true
@@ -89,7 +95,7 @@
     },
     "JavaScript": {
       "language_servers": ["biome", "vtsls", "!typescript-language-server", "!eslint", "..."],
-      "formatter": "language_server",
+      "formatter": { "language_server": { "name": "biome" } },
       "code_actions_on_format": {
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true
@@ -97,7 +103,7 @@
     },
     "JSX": {
       "language_servers": ["biome", "vtsls", "!typescript-language-server", "!eslint", "..."],
-      "formatter": "language_server",
+      "formatter": { "language_server": { "name": "biome" } },
       "code_actions_on_format": {
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true
@@ -141,7 +147,8 @@
     "dock": "left",
     "bold_folder_labels": true,
     "git_status": true,
-    "indent_size": 20
+    "indent_size": 20,
+    "show_diagnostics": "errors"
   },
   "file_scan_exclusions": [
     "**/.git",
@@ -165,7 +172,6 @@
     "**/.nuxt",
     "**/.output",
     "**/.svelte-kit",
-    "**/.astro",
     "**/.vercel",
     "**/.netlify",
     "**/target",
@@ -219,7 +225,7 @@
     "mode": "dark"
   },
   "title_bar": {
-    "show_branch_icon": true,
+    "show_branch_status_icon": true,
     "show_menus": true
   },
   "ui_font_size": 16,
@@ -261,14 +267,16 @@
   "preview_tabs": {
     "enabled": true,
     "enable_preview_from_file_finder": true,
-    "enable_preview_from_code_navigation": true
+    "enable_keep_preview_on_code_navigation": true
   },
   "expand_excerpt_lines": 5,
   "use_smartcase_search": true,
   "confirm_quit": false,
   "auto_install_extensions": {
     "html": true,
-    "graphql": false
+    "graphql": false,
+    "astro": true,
+    "biome": true
   },
   "tab_bar": {
     "show_pinned_tabs_in_separate_row": true,
