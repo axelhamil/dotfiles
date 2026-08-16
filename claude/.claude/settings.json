@@ -1,9 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-6",
+    "ENABLE_PROMPT_CACHING_1H": "1",
     "DISABLE_NONESSENTIAL_TRAFFIC": "1"
   },
   "attribution": {
@@ -42,7 +40,9 @@
       "Bash(id)",
       "Bash(env)",
       "Bash(rtk *)",
-      "Bash(~/.cargo/bin/rtk *)"
+      "Bash(~/.cargo/bin/rtk *)",
+      "Bash(mkdir -p /home/axel/.claude/brainstorm-projects/statusline)",
+      "Bash(/home/axel/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/brainstorming/scripts/start-server.sh --project-dir /home/axel/.claude/brainstorm-projects/statusline)"
     ],
     "deny": [
       "Bash(rm -rf *)",
@@ -56,6 +56,10 @@
       "Bash(git clean -fd*)"
     ],
     "defaultMode": "auto"
+  },
+  "skillOverrides": {
+    "deep-research": "user-invocable-only",
+    "claude-in-chrome": "user-invocable-only"
   },
   "hooks": {
     "PostToolUse": [
@@ -93,6 +97,10 @@
           {
             "type": "command",
             "command": "/home/axel/.claude/hooks/session-git.sh"
+          },
+          {
+            "type": "command",
+            "command": "/usr/local/bin/icm hook start"
           }
         ]
       }
@@ -126,49 +134,46 @@
           }
         ]
       }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/usr/local/bin/icm hook prompt"
-          }
-        ]
-      }
     ]
   },
+  "enableWorkflows": false,
+  "workflowKeywordTriggerEnabled": false,
   "statusLine": {
     "type": "command",
-    "command": "bun /home/axel/.claude/scripts/statusline-godlike/src/index.ts",
+    "command": "bun /home/axel/.claude/scripts/ccwatermelon/src/index.ts",
     "padding": 0
   },
   "enabledPlugins": {
-    "claude-md-management@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": false,
     "commit-commands@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
-    "figma@claude-plugins-official": true,
+    "figma@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true,
-    "hookify@claude-plugins-official": true,
-    "learning-output-style@claude-plugins-official": true,
-    "linear@claude-plugins-official": true,
-    "playwright@claude-plugins-official": true,
-    "plugin-dev@claude-plugins-official": true,
+    "hookify@claude-plugins-official": false,
+    "learning-output-style@claude-plugins-official": false,
+    "linear@claude-plugins-official": false,
+    "playwright@claude-plugins-official": false,
+    "plugin-dev@claude-plugins-official": false,
     "rust-analyzer-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "railway@claude-plugins-official": true
+    "railway@claude-plugins-official": false,
+    "stripe@claude-plugins-official": false
   },
   "language": "Francais",
   "sandbox": {
     "enabled": false
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "medium",
   "promptSuggestionEnabled": true,
+  "tui": "fullscreen",
+  "showThinkingSummaries": true,
   "skipDangerousModePermissionPrompt": true,
-  "autoCompactEnabled": false,
+  "autoCompactEnabled": true,
+  "autoCompactWindow": 430000,
   "teammateMode": "tmux",
+  "agentPushNotifEnabled": false,
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
   "mcpServers": {
@@ -179,5 +184,5 @@
       "command": "uvx"
     }
   },
-  "agentPushNotifEnabled": false
+  "autoMemoryEnabled": false
 }
