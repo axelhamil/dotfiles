@@ -1,208 +1,66 @@
+// ═══════════════════════════════════════════════════════════════════════
+// Waybar — Split Islands
+// Les deux barres sont STRICTEMENT identiques : elles n'ont ici que leur
+// `output`. Tous les modules vivent dans modules.jsonc (partagé), donc
+// aucune divergence possible entre DP-2 et HDMI-A-1.
+// ═══════════════════════════════════════════════════════════════════════
 [
-  // ═══════════════════════════════════════════════
-  // SPLIT ISLANDS — DP-2 (écran principal)
-  // 3 sections (left/center/right) stylées en îlots flottants distincts via CSS.
-  // ═══════════════════════════════════════════════
   {
     "output": "DP-2",
+    "include": ["~/.config/waybar/modules.jsonc"],
     "layer": "top",
     "position": "top",
     "height": 32,
-    "margin-top": 0,
-    "margin-bottom": 0,
     "margin-left": 6,
     "margin-right": 6,
     "spacing": 0,
+    "reload_style_on_change": true,
 
-    "modules-left": [
-      "hyprland/workspaces",
-      "hyprland/window"
-    ],
-    "modules-center": [
-      "clock"
-    ],
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock"],
     "modules-right": [
+      "group/hardware",
+      "custom/docker",
+      "custom/updates",
+      "custom/obs",
+      "privacy",
+      "idle_inhibitor",
+      "custom/nightlight",
       "pulseaudio",
       "network",
       "bluetooth",
       "custom/notification",
       "tray",
-      "custom/gpu",
       "custom/shutdown"
-    ],
-
-    "hyprland/workspaces": {
-      "format": "{icon}",
-      "sort-by": "number",
-      "all-outputs": false,
-      "show-special": false,
-      "disable-scroll": true,
-      "format-icons": {
-        "active": "●",
-        "default": "○",
-        "empty": "○",
-        "persistent": "○",
-        "urgent": "●"
-      },
-      "persistent-workspaces": {
-        "DP-2": ["1", "2", "3", "4"]
-      },
-      "on-click": "activate"
-    },
-
-    "hyprland/window": {
-      "format": "{title}",
-      "separate-outputs": true,
-      "max-length": 38,
-      "rewrite": {
-        "(.*) — Mozilla Firefox": "$1",
-        "(.*) - Google Chrome": "$1",
-        "(.*) — Zen Browser": "$1",
-        "(.*)kitty": "$1",
-        "(.*)": "$1"
-      }
-    },
-
-    "clock": {
-      "interval": 1,
-      "timezone": "Europe/Paris",
-      "locale": "fr_FR.utf8",
-      "format": "{:%a %d %b · %H:%M:%S}",
-      "format-alt": "{:%A %d %B %Y · %H:%M:%S}",
-      "tooltip-format": "<tt><small>{calendar}</small></tt>",
-      "calendar": {
-        "mode": "year",
-        "mode-mon-col": 3,
-        "weeks-pos": "right",
-        "on-scroll": 1,
-        "format": {
-          "months": "<span color='#cba6f7'><b>{}</b></span>",
-          "days": "<span color='#cdd6f4'><b>{}</b></span>",
-          "weeks": "<span color='#94e2d5'>W{}</span>",
-          "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
-          "today": "<span color='#f5e0dc'><b><u>{}</u></b></span>"
-        }
-      },
-      "actions": {
-        "on-click-right": "mode",
-        "on-scroll-up": "shift_up",
-        "on-scroll-down": "shift_down"
-      }
-    },
-
-    "pulseaudio": {
-      "scroll-step": 2,
-      "format": "{icon} {volume}%",
-      "format-muted": "󰖁 mute",
-      "format-icons": {
-        "headphone": "󰋋",
-        "hands-free": "󰋋",
-        "headset": "󰋋",
-        "default": ["󰕿", "󰖀", "󰕾"]
-      },
-      "on-click": "~/.config/waybar/popup.sh org.pulseaudio.pavucontrol pavucontrol",
-      "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-    },
-
-    "network": {
-      "format-ethernet": "󰈀",
-      "format-wifi": " {signalStrength}%",
-      "format-disconnected": "󰈂",
-      "tooltip-format-ethernet": "󰈀 Ethernet\n{ifname}: {ipaddr}/{cidr}\nGateway: {gwaddr}\n\n↓ {bandwidthDownBits}  ↑ {bandwidthUpBits}",
-      "tooltip-format-wifi": " WiFi — {essid} ({signalStrength}%)\n{ifname}: {ipaddr}/{cidr}\n\n↓ {bandwidthDownBits}  ↑ {bandwidthUpBits}",
-      "tooltip-format-disconnected": "󰈂 Déconnecté",
-      "interval": 3,
-      "on-click": "~/.config/waybar/popup.sh nm-connection-editor nm-connection-editor",
-      "on-click-right": "~/.config/waybar/popup.sh popup-nmtui kitty --class popup-nmtui -e nmtui"
-    },
-
-    "bluetooth": {
-      "format": "",
-      "format-connected": " {num_connections}",
-      "format-disabled": "󰂲",
-      "tooltip-format": " Bluetooth\n{controller_alias}",
-      "tooltip-format-connected": " Bluetooth\n{controller_alias}\n{device_enumerate}",
-      "tooltip-format-enumerate-connected": "  {device_alias}",
-      "on-click": "~/.config/waybar/popup.sh blueman-manager blueman-manager",
-      "on-click-right": "bluetoothctl power toggle"
-    },
-
-    "custom/notification": {
-      "format": "󰂚 {}",
-      "interval": 2,
-      "exec": "~/.config/waybar/dunst-count.sh",
-      "tooltip-format": "Clic: rappeler | Droit: DnD | Milieu: tout fermer",
-      "on-click": "~/.config/waybar/dunst-history.sh",
-      "on-click-right": "dunstctl set-paused toggle",
-      "on-click-middle": "dunstctl close-all"
-    },
-
-    "tray": {
-      "icon-size": 14,
-      "spacing": 8
-    },
-
-    "custom/gpu": {
-      "format": "󰢮 {}°",
-      "interval": 5,
-      "exec": "~/.config/waybar/gpu-info.sh",
-      "return-type": "json",
-      "tooltip": true
-    },
-
-    "custom/shutdown": {
-      "format": "⏻",
-      "on-click": "wlogout -b 5 -B 500 -T 500",
-      "tooltip": false
-    }
+    ]
   },
 
-  // ═══════════════════════════════════════════════
-  // SECONDARY — HDMI-A-1
-  // 2 îlots : workspaces gauche + clock droite.
-  // ═══════════════════════════════════════════════
   {
     "output": "HDMI-A-1",
+    "include": ["~/.config/waybar/modules.jsonc"],
     "layer": "top",
     "position": "top",
-    "height": 28,
-    "margin-top": 0,
-    "margin-bottom": 0,
+    "height": 32,
     "margin-left": 6,
     "margin-right": 6,
     "spacing": 0,
+    "reload_style_on_change": true,
 
-    "modules-left": [
-      "hyprland/workspaces"
-    ],
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock"],
     "modules-right": [
-      "clock"
-    ],
-
-    "hyprland/workspaces": {
-      "format": "{icon}",
-      "sort-by": "number",
-      "all-outputs": false,
-      "show-special": false,
-      "disable-scroll": true,
-      "format-icons": {
-        "active": "●",
-        "default": "○",
-        "empty": "○",
-        "persistent": "○",
-        "urgent": "●"
-      },
-      "persistent-workspaces": {
-        "HDMI-A-1": ["5", "6", "7", "8"]
-      },
-      "on-click": "activate"
-    },
-
-    "clock": {
-      "interval": 1,
-      "timezone": "Europe/Paris",
-      "locale": "fr_FR.utf8",
-      "format": "{:%a %d %b · %H:%M:%S}"
-    }
+      "group/hardware",
+      "custom/docker",
+      "custom/updates",
+      "custom/obs",
+      "privacy",
+      "idle_inhibitor",
+      "custom/nightlight",
+      "pulseaudio",
+      "network",
+      "bluetooth",
+      "custom/notification",
+      "custom/shutdown"
+    ]
   }
 ]
