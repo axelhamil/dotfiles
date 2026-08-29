@@ -9,6 +9,9 @@
 ## UI
 - Figma/screenshots = **référence absolue**. Pixel-perfect ou c'est faux.
 - Contrainte technique empêche ? Signaler AVANT d'implémenter.
+- **shadcn = la brique de base.** Un `<button>`, `<input>`, `<select>`, `<dialog>` écrit à la main alors qu'une primitive shadcn existe = faux. `pnpm dlx shadcn@latest add <primitive>` puis composer.
+- **Zéro style inline sauf positionnement et layout.** Autorisé : `flex`, `grid`, `gap`, `w-`, `h-`, `p-`, `m-`, `col-span`, `items-`, `justify-`. Interdit inline : couleurs, bordures, radius, ombres, typographie, états hover/focus.
+- **Custom shadcn = via le thème CSS global**, jamais au point d'appel. Les variables (`--primary`, `--radius`, `--muted-foreground`...) dans le CSS global ; les variantes via `cva` dans le fichier de la primitive. Un `className="bg-blue-500"` sur un `<Button>` = faux, la couleur appartient au thème.
 
 ## Patterns DDD/Clean Arch (transversaux, tous projets)
 - **No `throw` en domain/application** → return `Result<T, E>`.
