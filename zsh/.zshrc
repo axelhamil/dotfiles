@@ -47,3 +47,6 @@ eval "$(zoxide init zsh)"
 
 # Powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# bun completions
+[ -s "/home/axel/.bun/_bun" ] && source "/home/axel/.bun/_bun"
