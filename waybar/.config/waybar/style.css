@@ -1,24 +1,13 @@
 /* ═══════════════════════════════════════════════════════════════════════
    Waybar — Split Islands (Catppuccin Mocha)
-   3 îlots flottants distincts : workspaces+window | clock | tray cluster
+   3 îlots flottants : workspaces+window | clock | cluster droit
+   Feuille unique partagée par DP-2 et HDMI-A-1.
    ═══════════════════════════════════════════════════════════════════════ */
 
-@define-color base    #1e1e2e;
-@define-color mantle  #181825;
-@define-color crust   #11111b;
-@define-color text    #cdd6f4;
+@import "colors.css";
+
 @define-color subtext #a6adc8;
-@define-color surface0 #313244;
-@define-color surface1 #45475a;
-@define-color overlay  #6c7086;
-@define-color mauve   #cba6f7;
-@define-color teal    #94e2d5;
-@define-color sky     #89dceb;
-@define-color blue    #89b4fa;
-@define-color green   #a6e3a1;
-@define-color yellow  #f9e2af;
-@define-color peach   #fab387;
-@define-color red     #f38ba8;
+@define-color overlay #6c7086;
 
 /* ── reset ──────────────────────────────────────────────────────────── */
 * {
@@ -34,7 +23,7 @@
   -gtk-icon-shadow: none;
 }
 
-/* ── window globale : 100% transparente, les îlots font le décor ───── */
+/* ── window globale : transparente, les îlots font le décor ────────── */
 window#waybar {
   background: transparent;
   color: @text;
@@ -43,7 +32,7 @@ window#waybar {
 
 window#waybar.hidden { opacity: 0.0; }
 
-/* ── ISLAND base : appliqué aux 3 sections .modules-* ────────────── */
+/* ── ISLAND base ──────────────────────────────────────────────────── */
 .modules-left,
 .modules-center,
 .modules-right {
@@ -55,7 +44,7 @@ window#waybar.hidden { opacity: 0.0; }
   box-shadow: 0 8px 24px -10px rgba(0, 0, 0, 0.6);
 }
 
-/* ── center island = horloge en hero, plus noire + plus rounded ──── */
+/* ── center island = horloge en hero ──────────────────────────────── */
 .modules-center {
   background: rgba(0, 0, 0, 0.88);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -64,7 +53,7 @@ window#waybar.hidden { opacity: 0.0; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   WORKSPACES — text dots (○ / ●), active = teal plus gros
+   WORKSPACES — dots (○ / ●)
    ═══════════════════════════════════════════════════════════════════ */
 #workspaces {
   background: transparent;
@@ -101,9 +90,7 @@ window#waybar.hidden { opacity: 0.0; }
   font-size: 12px;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   WINDOW TITLE — discret, gauche de l'îlot
-   ═══════════════════════════════════════════════════════════════════ */
+/* ── titre de fenêtre ─────────────────────────────────────────────── */
 #window {
   color: @text;
   font-size: 12px;
@@ -111,9 +98,7 @@ window#waybar.hidden { opacity: 0.0; }
   opacity: 0.78;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   CLOCK (center island) — hero
-   ═══════════════════════════════════════════════════════════════════ */
+/* ── horloge ──────────────────────────────────────────────────────── */
 #clock {
   color: @text;
   font-size: 13.5px;
@@ -123,70 +108,121 @@ window#waybar.hidden { opacity: 0.0; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   RIGHT ISLAND — modules avec respiration entre eux
+   ÎLOT DROIT — une seule règle gouverne taille, couleur et respiration.
+   Les icônes sont grisées via Pango dans le format, les valeurs restent
+   en @text : uniformité par défaut, couleur réservée aux ÉTATS.
    ═══════════════════════════════════════════════════════════════════ */
+#cpu,
+#temperature,
+#memory,
+#custom-gpu,
+#custom-docker,
+#custom-updates,
+#custom-obs,
+#custom-nightlight,
+#privacy,
+#idle_inhibitor,
 #pulseaudio,
 #network,
 #bluetooth,
 #custom-notification,
 #tray,
-#custom-gpu,
 #custom-shutdown {
   color: @text;
-  padding: 0 8px;
+  font-size: 12.5px;
+  font-weight: 500;
   background: transparent;
+  padding: 0 8px;
+  margin: 0;
 }
 
-/* ── audio ── */
+/* ── cluster hardware : sous-pilule, modules plus serrés entre eux ── */
+#hardware {
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 12px;
+  padding: 0 3px;
+  margin: 5px 6px 5px 0;
+}
+
+#cpu,
+#temperature,
+#memory,
+#custom-gpu {
+  padding: 0 6px;
+}
+
+/* ── ÉTATS — seul moment où la couleur apparaît ───────────────────── */
+#cpu.warning,
+#memory.warning,
+#temperature.warning,
+#custom-gpu.warning     { color: @peach; }
+
+#cpu.critical,
+#memory.critical        { color: @red; }
+
+#temperature.critical,
+#custom-gpu.critical    { color: @red; animation: pulse 1.4s ease-in-out infinite alternate; }
+
+#custom-gpu.unavailable { color: @overlay; }
+
+/* ── indicateurs d'état ───────────────────────────────────────────── */
+#custom-docker         { color: @sky; }
+#custom-docker.off,
+#custom-docker.idle    { color: @overlay; }
+
+#custom-updates        { color: @yellow; }
+#custom-updates:hover  { color: @peach; }
+
+#custom-obs.standby    { color: @overlay; }
+#custom-obs.recording  { color: @peach; }
+#custom-obs.live,
+#custom-obs.live-rec   { color: @red; animation: pulse 1.4s ease-in-out infinite alternate; }
+
+#custom-nightlight.off { color: @overlay; }
+#custom-nightlight.on  { color: @peach; }
+
+#privacy { padding: 0 4px; }
+#privacy-item { padding: 0 4px; color: @red; }
+
+#idle_inhibitor           { color: @overlay; }
+#idle_inhibitor.activated { color: @yellow; }
+
 #pulseaudio.muted { color: @overlay; }
 #pulseaudio:hover { color: @mauve; }
 
-/* ── network ── */
 #network.disconnected { color: @red; }
-#network:hover { color: @sky; }
+#network:hover        { color: @sky; }
 
-/* ── bluetooth ── */
 #bluetooth.disabled,
-#bluetooth.off { color: @overlay; }
-#bluetooth:hover { color: @blue; }
+#bluetooth.off    { color: @overlay; }
+#bluetooth:hover  { color: @blue; }
 
-/* ── notifs ── */
-#custom-notification { color: @yellow; }
-#custom-notification:hover { color: @peach; }
+#custom-notification.idle   { color: @overlay; }
+#custom-notification.active { color: @yellow; }
+#custom-notification.dnd    { color: @red; }
+#custom-notification:hover  { color: @peach; }
 
-/* ── tray ── */
+/* ── tray (DP-2 uniquement) ───────────────────────────────────────── */
 #tray { padding: 0 6px; }
-#tray > .passive  { -gtk-icon-effect: dim; }
-#tray > .active   { background: transparent; }
+#tray > .passive { -gtk-icon-effect: dim; }
+#tray > .active  { background: transparent; }
 #tray > .needs-attention {
   -gtk-icon-effect: highlight;
   background: rgba(243, 139, 168, 0.18);
   border-radius: 6px;
 }
 
-/* ── GPU temp ── */
-#custom-gpu { color: @yellow; }
-#custom-gpu.warning  { color: @peach; }
-#custom-gpu.critical {
-  color: @red;
-  animation: pulse 1.4s ease-in-out infinite alternate;
-}
+/* ── power ── */
+#custom-shutdown { color: @overlay; padding: 0 2px 0 10px; }
+#custom-shutdown:hover { color: @red; }
 
 @keyframes pulse {
   from { opacity: 1; }
   to   { opacity: 0.55; }
 }
 
-/* ── power ── */
-#custom-shutdown {
-  color: @red;
-  padding: 0 4px 0 12px;
-  font-size: 13px;
-}
-#custom-shutdown:hover { color: #ff6b81; }
-
 /* ═══════════════════════════════════════════════════════════════════
-   TOOLTIPS — Catppuccin propre
+   TOOLTIPS
    ═══════════════════════════════════════════════════════════════════ */
 tooltip {
   background: @base;

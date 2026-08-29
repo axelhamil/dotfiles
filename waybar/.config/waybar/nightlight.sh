@@ -19,10 +19,10 @@ if pgrep -x hyprsunset &>/dev/null; then
     TEMP=$(ps aux | grep 'hyprsunset' | grep -oP '\-t\s*\K\d+' | head -1)
     [ -z "$TEMP" ] && TEMP="3500"
     TT="Veilleuse active (${TEMP}K)"$'\n'"Clic pour desactiver"
-    jq -cn --arg text "ON" --arg tooltip "$TT" --arg class "on" \
+    jq -cn --arg text "󰖔" --arg tooltip "$TT" --arg class "on" \
         '{text: $text, tooltip: $tooltip, class: $class}'
 else
     TT="Veilleuse inactive"$'\n'"Clic pour activer (3500K)"
-    jq -cn --arg text "" --arg tooltip "$TT" --arg class "off" \
+    jq -cn --arg text "󰖔" --arg tooltip "$TT" --arg class "off" \
         '{text: $text, tooltip: $tooltip, class: $class}'
 fi

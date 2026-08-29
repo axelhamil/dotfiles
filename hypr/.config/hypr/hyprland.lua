@@ -388,6 +388,28 @@ hl.window_rule({
     size = "700 550",
 })
 
+-- Jeux : tearing autorisé (latence) + curseur confiné, sans blur ni arrondi.
+-- `immediate` n'a d'effet que parce que general.allow_tearing = true.
+hl.window_rule({
+    name = "gaming",
+    match = {
+        class = "^(steam_app_.*|gamescope|cs2|factorio|.*\\.exe)$",
+    },
+    immediate = true,
+    no_blur = true,
+    rounding = 0,
+})
+
+-- popups moniteur système ouverts depuis le cluster hardware de waybar
+hl.window_rule({
+    match = {
+        class = "^(popup-btop|popup-gpu|popup-docker|popup-updates)$",
+    },
+    float = true,
+    move = "50% 3.5%",
+    size = "1100 700",
+})
+
 hl.window_rule({
     match = {
         class = "^(helvum)$",
@@ -494,6 +516,9 @@ hl.config({
         },
         resize_on_border = true,
         layout = "dwindle",
+        -- autorise le tearing ; effectif uniquement sur les fenêtres
+        -- portant la règle `immediate` (voir window_rule "gaming")
+        allow_tearing = true,
     },
     decoration = {
         rounding = 14,
@@ -509,8 +534,16 @@ hl.config({
             color = "rgba(00000055)",
             offset = "0 6",
         },
+        -- glow (0.55+) : halo coloré sur la fenêtre active, reprend le
+        -- dégradé mauve→bleu de general.col.active_border
+        glow = {
+            enabled = true,
+            range = 12,
+            render_power = 3,
+            color = { colors = { "rgba(cba6f766)", "rgba(89b4fa66)" }, angle = 45 },
+        },
         blur = {
-            enabled = false,
+            enabled = true,
             size = 6,
             passes = 2,
             xray = false,
@@ -523,6 +556,10 @@ hl.config({
     },
     animations = {
         enabled = true,
+    },
+    binds = {
+        -- re-presser SUPER+<n> sur le workspace courant y revient depuis le précédent
+        workspace_back_and_forth = true,
     },
     dwindle = {
         preserve_split = true,
@@ -553,10 +590,9 @@ hl.config({
 })
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("hyprctl dispatch focusmonitor DP-2")
     hl.exec_cmd("xrandr --output DP-2 --primary")
     hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
-    hl.exec_cmd("nm-applet")
+    -- nm-applet retiré : doublonnait le module network de waybar dans le tray
     hl.exec_cmd("waybar")
     hl.exec_cmd("env QT_QPA_PLATFORMTHEME=qt5ct keepassxc --keyfile ~/.local/share/keepassxc/keyfile.keyx ~/Documents/secrets/passwords.kdbx --minimized")
     hl.exec_cmd("awww-daemon")
@@ -569,5 +605,17 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("hypridle")
     hl.exec_cmd("wl-paste --type text --watch cliphist store")
     hl.exec_cmd("wl-paste --type image --watch cliphist store")
+
+    -- DOIT rester en dernier : ramène le focus sur DP-2 une fois que
+    -- keepassxc / cider / les scratchpads ont fini de s'ouvrir.
+    hl.exec_cmd("~/.config/hypr/scripts/focus-primary.sh DP-2")
 end)
 
+
+-- Rebranchement d'écran : Hyprland redistribue les workspaces et le focus
+-- atterrit souvent sur le mauvais moniteur. On le ramène sur DP-2.
+-- Nom d'événement vérifié par sondage : "monitor.added" (les variantes
+-- camelCase renvoient nil, donc aucun abonnement).
+hl.on("monitor.added", function()
+    hl.exec_cmd("~/.config/hypr/scripts/focus-primary.sh DP-2")
+end)
