@@ -1,3 +1,40 @@
+# Cursor Agent shell integration.
+# Cached: `agent shell-integration` forks a 1.6s binary on every shell start.
+# Lazy chat: upstream runs `agent create-chat` (1.5s, network) before the first
+# prompt; it is stripped here and deferred to first use of agent / please-fix /
+# agent mode. Cache is rebuilt automatically when the agent binary changes.
+_cursor_int="${XDG_CACHE_HOME:-$HOME/.cache}/cursor-agent-shell-integration.zsh"
+if [[ ! -s "$_cursor_int" || "$_cursor_int" -ot "$HOME/.local/bin/agent" ]]; then
+  ~/.local/bin/agent shell-integration zsh \
+    | sed '/^# Create a new chat session at the start of each shell session$/,/^fi$/d' \
+    > "$_cursor_int"
+  cat >> "$_cursor_int" <<'CURSOR_LAZY_CHAT'
+
+_cursor_chat_ensure() {
+  [[ -n "$CURSOR_AGENT_CHAT_ID" ]] && return
+  export CURSOR_AGENT_CHAT_ID="$(command agent create-chat)"
+}
+
+if [[ -t 0 ]] && (( $+functions[agent] )); then
+  functions -c agent _cursor_agent_orig
+  agent() { _cursor_chat_ensure; _cursor_agent_orig "$@"; }
+
+  functions -c please-fix _cursor_please_fix_orig
+  please-fix() { _cursor_chat_ensure; _cursor_please_fix_orig "$@"; }
+
+  functions -c please-fix-or-accept-line _cursor_accept_orig
+  please-fix-or-accept-line() {
+    if (( zsh_agent_mode )) || [[ -z "$BUFFER" && $_last_command_failed -eq 1 ]]; then
+      _cursor_chat_ensure
+    fi
+    _cursor_accept_orig "$@"
+  }
+  zle -N please-fix-or-accept-line
+fi
+CURSOR_LAZY_CHAT
+fi
+source "$_cursor_int"
+unset _cursor_int
 # Powerlevel10k instant prompt
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
