@@ -54,7 +54,7 @@ L'éditeur Malt accepte de vrais H2. Ne pas se limiter aux blocs du menu `/` (Im
 
 `Client — Mission (Année)`. Le lecteur doit savoir en trois secondes de quoi il s'agit.
 
-- Bon : `Atome 8 — Refonte FinTech (2024)`, `Gleamer — Pipeline DICOM & IA médicale`
+- Bon : `Acme Capital — Refonte FinTech (2024)`, `Medscan — Pipeline DICOM & IA médicale`
 - Sous NDA : `Billetterie événementielle — Dashboard temps réel (NDA)`
 - Mauvais : `Process Architecture & Workflow Optimization` (aucun client, aucun contexte)
 
