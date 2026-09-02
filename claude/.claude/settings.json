@@ -166,12 +166,13 @@
     "enabled": false
   },
   "effortLevel": "medium",
+  "autoCompactWindow": 430000,
   "promptSuggestionEnabled": true,
   "tui": "fullscreen",
+  "autoMemoryEnabled": false,
   "showThinkingSummaries": true,
   "skipDangerousModePermissionPrompt": true,
   "autoCompactEnabled": true,
-  "autoCompactWindow": 430000,
   "teammateMode": "tmux",
   "agentPushNotifEnabled": false,
   "skipAutoPermissionPrompt": true,
@@ -184,5 +185,9 @@
       "command": "uvx"
     }
   },
-  "autoMemoryEnabled": false
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "high"
+    }
+  }
 }
