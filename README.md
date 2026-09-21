@@ -10,6 +10,7 @@ Clean-home setup for Apple Silicon. The old tree is frozen on [`macos-legacy`](h
 | Oh My Zsh | `~/.local/share/oh-my-zsh` |
 | Zsh | `~/.config/zsh` (`ZDOTDIR`) |
 | Git | `~/.config/git` |
+| Kitty | `~/.config/kitty` (Catppuccin Mocha, same as Arch) |
 | Node / runtimes | mise → `~/.local/share/mise` |
 | PATH (Homebrew) | `$ZDOTDIR/.zprofile` — after macOS `path_helper` |
 | Agent rules | `~/.agents/AGENTS.md` |
@@ -24,7 +25,7 @@ cd ~/.dotfiles
 ./bootstrap.sh
 ```
 
-Optional: `./bootstrap.sh zsh git npm mise aerospace`
+Optional: `./bootstrap.sh zsh git npm mise agents kitty aerospace`
 
 Toolchain (when Homebrew is installed):
 
@@ -44,7 +45,7 @@ CLAUDE.md        # @AGENTS.md — Claude Code
 agents/          # stowed to ~/.agents (global) + Codex/Claude adapters
 bootstrap.sh
 Brewfile
-zsh/ git/ npm/ mise/
+zsh/ git/ npm/ mise/ kitty/
 aerospace/       # optional
 scripts/macos-tweaks.sh
 ```
@@ -77,5 +78,5 @@ Hooks live in `.githooks/` (`core.hooksPath`). Do not skip them.
 
 - macOS + zsh
 - Oh My Zsh + powerlevel10k (bootstrap)
-- A Nerd Font in the terminal
+- FiraCode Nerd Font in the terminal (Brewfile cask, or install the TTF files)
 - Homebrew + Brewfile tools (optional, for eza/bat/mise/…)

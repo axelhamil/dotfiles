@@ -6,6 +6,6 @@ This repository is the macOS machine config. Global agent rules live in `~/.agen
 - Stow-style packages under `~/.dotfiles` → XDG dirs.
 - Oh My Zsh → `~/.local/share/oh-my-zsh`. Git → `~/.config/git`.
 - Original tree: branch `macos-legacy`. This tree: `macos-2.0`.
-- Bootstrap: `./bootstrap.sh`. Optional packages: `aerospace`.
+- Bootstrap: `./bootstrap.sh`. Optional packages: `aerospace`. Kitty matches the Arch look (Catppuccin Mocha + FiraCode, Linux glyph compositing).
 - Config only in git. Identity and secrets stay on the machine (`~/.config/git/local`, `~/.ssh`).
 - Pre-commit / pre-push run `scripts/check-leaks.py`. Never `--no-verify`.

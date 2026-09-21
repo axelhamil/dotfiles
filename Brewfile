@@ -14,4 +14,5 @@ brew "ripgrep"
 brew "wget"
 brew "zoxide"
 
+cask "kitty"
 cask "font-fira-code-nerd-font"

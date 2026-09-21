@@ -8,7 +8,7 @@ XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 ZSH="${ZSH:-$XDG_DATA_HOME/oh-my-zsh}"
 
-PACKAGES=(zsh git npm mise agents)
+PACKAGES=(zsh git npm mise agents kitty)
 BACKUP_DIR="$XDG_STATE_HOME/dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
 
 info()  { printf '\033[34m→\033[0m %s\n' "$*"; }
@@ -19,7 +19,7 @@ usage() {
   cat <<EOF
 Usage: ./bootstrap.sh [packages...]
 
-Default: zsh git npm mise agents
+Default: zsh git npm mise agents kitty
 Optional: aerospace
 
 Oh My Zsh → \$XDG_DATA_HOME/oh-my-zsh
