@@ -4,5 +4,13 @@
     "bindings": {
       "ctrl-shift-g": "git_panel::ToggleFocus"
     }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-shift-d": "editor::DuplicateLineDown",
+      "alt-up": "editor::MoveLineUp",
+      "alt-down": "editor::MoveLineDown"
+    }
   }
 ]
