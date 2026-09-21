@@ -9,7 +9,7 @@ hl.monitor({
 hl.monitor({
     output = "HDMI-A-1",
     mode = "2560x1080@60",
-    position = "1660x-1080",
+    position = "-800x-1080",
     scale = "1",
 })
 
@@ -426,6 +426,7 @@ hl.window_rule({
     float = true,
     center = true,
     size = "800 600",
+    no_initial_focus = true,
 })
 
 hl.window_rule({
@@ -572,6 +573,11 @@ hl.config({
         disable_hyprland_logo = true,
         vrr = 1,
     },
+    cursor = {
+        -- HDMI est souvent énuméré en premier au boot ; sans ça le curseur
+        -- (et donc le focus, follow_mouse = 1) atterrit sur HDMI-A-1.
+        default_monitor = "DP-2",
+    },
     input = {
         kb_layout = "fr",
         kb_variant = "",
@@ -598,16 +604,16 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("until awww query &>/dev/null; do sleep 0.1; done; awww img ~/Images/wallpapers/l-art-numerique-avec-le-paysage-urbain-et-l-architecture.jpg --transition-type none")
     hl.exec_cmd("walker --gapplication-service")
-    hl.exec_cmd("kitty --class scratch-term", { workspace = "special:term silent" })
-    hl.exec_cmd("nautilus", { workspace = "special:files silent" })
-    hl.exec_cmd("cider", { workspace = "special:music silent" })
+    hl.exec_cmd("kitty --class scratch-term", { workspace = "special:term silent", no_initial_focus = true })
+    hl.exec_cmd("nautilus", { workspace = "special:files silent", no_initial_focus = true })
+    hl.exec_cmd("cider", { workspace = "special:music silent", no_initial_focus = true })
     hl.exec_cmd("swaync")
     hl.exec_cmd("hypridle")
     hl.exec_cmd("wl-paste --type text --watch cliphist store")
     hl.exec_cmd("wl-paste --type image --watch cliphist store")
 
-    -- DOIT rester en dernier : ramène le focus sur DP-2 une fois que
-    -- keepassxc / cider / les scratchpads ont fini de s'ouvrir.
+    hl.dispatch(hl.dsp.focus({ monitor = "DP-2", workspace = 1 }))
+    -- Filet : keepassxc / cider peuvent encore voler le focus après coup.
     hl.exec_cmd("~/.config/hypr/scripts/focus-primary.sh DP-2")
 end)
 
