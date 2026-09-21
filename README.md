@@ -66,6 +66,7 @@ Local CI (enabled by `./bootstrap.sh`):
 ```bash
 python3 scripts/check-leaks.py          # whole tree (also runs on git push)
 python3 scripts/check-leaks.py --staged # index (also runs on git commit)
+python3 scripts/test-leaks.py           # gitignore + hooks + history hole
 ```
 
 Hooks live in `.githooks/` (`core.hooksPath`). Do not skip them.
