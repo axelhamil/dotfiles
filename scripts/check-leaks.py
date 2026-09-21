@@ -102,13 +102,7 @@ def scan_file(root: Path, path: Path) -> list[str]:
         return [f"{rel}: file too large to scan ({size} bytes)"]
 
     data = path.read_bytes()
-    if is_binary(data):
-        return hits
-
-    try:
-        text = data.decode("utf-8")
-    except UnicodeDecodeError:
-        text = data.decode("utf-8", errors="replace")
+    text = decode_payload(data)
 
     for i, line in enumerate(text.splitlines(), 1):
         name = scan_line(line)
@@ -118,25 +112,54 @@ def scan_file(root: Path, path: Path) -> list[str]:
     return hits
 
 
+def decode_payload(data: bytes) -> str:
+    if is_binary(data):
+        return data.replace(b"\0", b"\n").decode("latin-1")
+
+    try:
+        return data.decode("utf-8")
+    except UnicodeDecodeError:
+        return data.decode("utf-8", errors="replace")
+
+
+def scan_lines(text: str, prefix: str, added_only: bool = False) -> list[str]:
+    hits: list[str] = []
+    for i, line in enumerate(text.splitlines(), 1):
+        payload = line
+        if added_only:
+            if not line.startswith("+") or line.startswith("+++"):
+                continue
+            payload = line[1:]
+
+        name = scan_line(payload)
+        if name:
+            hits.append(f"{prefix}:{i}: {name}")
+
+    return hits
+
+
 def scan_git_log(root: Path, spec: str) -> list[str]:
+    messages = subprocess.check_output(
+        ["git", "log", "--format=%B", spec],
+        cwd=root,
+        text=True,
+        errors="replace",
+    )
     diff = subprocess.check_output(
         ["git", "log", "-p", "--format=", spec],
         cwd=root,
         text=True,
         errors="replace",
     )
-    hits: list[str] = []
-    for i, line in enumerate(diff.splitlines(), 1):
-        if not line.startswith("+") or line.startswith("+++"):
-            continue
-        name = scan_line(line[1:])
-        if name:
-            hits.append(f"git-history:{i}: {name}")
-    return hits
+    return [
+        *scan_lines(messages, "git-message"),
+        *scan_lines(diff, "git-history", added_only=True),
+    ]
 
 
-def scan_push_stdin(root: Path) -> list[str]:
+def scan_push_stdin(root: Path) -> tuple[list[str], list[str]]:
     hits: list[str] = []
+    specs: list[str] = []
     for raw in sys.stdin:
         parts = raw.split()
         if len(parts) < 4:
@@ -145,11 +168,12 @@ def scan_push_stdin(root: Path) -> list[str]:
         if local_sha == ZERO:
             continue
         spec = local_sha if remote_sha == ZERO else f"{remote_sha}..{local_sha}"
+        specs.append(spec)
         hits.extend(scan_git_log(root, spec))
-    return hits
+    return hits, specs
 
 
-def run_gitleaks(root: Path, staged: bool) -> int:
+def run_gitleaks(root: Path, staged: bool, log_opts: str | None = None) -> int:
     if shutil.which("gitleaks") is None:
         return 0
 
@@ -159,6 +183,8 @@ def run_gitleaks(root: Path, staged: bool) -> int:
         cmd += ["--config", str(config)]
     if staged:
         cmd.append("--staged")
+    elif log_opts:
+        cmd += ["--log-opts", log_opts]
 
     print("→ gitleaks")
     return subprocess.call(cmd, cwd=root)
@@ -181,15 +207,23 @@ def main() -> int:
     for path in git_files(root, staged=staged):
         hits.extend(scan_file(root, path))
 
+    push_specs: list[str] = []
     if pushing:
-        hits.extend(scan_push_stdin(root))
+        push_hits, push_specs = scan_push_stdin(root)
+        hits.extend(push_hits)
 
     if hits:
         return fail(hits)
 
-    gitleaks_rc = run_gitleaks(root, staged=staged)
-    if gitleaks_rc != 0:
-        return gitleaks_rc
+    if pushing:
+        for spec in push_specs:
+            gitleaks_rc = run_gitleaks(root, staged=False, log_opts=spec)
+            if gitleaks_rc != 0:
+                return gitleaks_rc
+    else:
+        gitleaks_rc = run_gitleaks(root, staged=staged)
+        if gitleaks_rc != 0:
+            return gitleaks_rc
 
     print(f"✓ secret scan clean ({'push' if pushing else 'staged' if staged else 'tree'})")
     return 0

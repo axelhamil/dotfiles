@@ -1,5 +1,5 @@
 # Sourced for every zsh (login, interactive, scripts) via ~/.zshenv.
-# PATH stays in .zprofile so macOS path_helper cannot reorder it.
+# PATH lives in path.zsh. Login shells apply it from .zprofile, after path_helper.
 
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"

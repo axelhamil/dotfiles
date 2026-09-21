@@ -253,6 +253,105 @@ def test_hooks_block_commit_and_force_add() -> list[str]:
     return errors
 
 
+def test_scanner_detects_binary() -> list[str]:
+    errors = []
+    with tempfile.TemporaryDirectory() as tmp:
+        repo = Path(tmp) / "repo"
+        setup_repo(repo)
+        blob = repo / "secret.bin"
+        blob.write_bytes(b"\0\0" + FAKE["ghp"].encode() + b"\0")
+        run(["git", "add", "-f", "secret.bin"], cwd=repo)
+        r = subprocess.run(
+            ["python3", str(SCANNER), "--staged"],
+            cwd=repo,
+            capture_output=True,
+            text=True,
+        )
+        if r.returncode == 0:
+            errors.append(f"scanner MISS on binary secret: {r.stdout}{r.stderr}")
+
+        run(["git", "reset", "-q", "HEAD"], cwd=repo)
+        blob.write_bytes(b"\0hello\0world\0")
+        run(["git", "add", "-f", "secret.bin"], cwd=repo)
+        r = subprocess.run(
+            ["python3", str(SCANNER), "--staged"],
+            cwd=repo,
+            capture_output=True,
+            text=True,
+        )
+        if r.returncode != 0:
+            errors.append(f"scanner FALSE POSITIVE on clean binary: {r.stdout}{r.stderr}")
+    return errors
+
+
+def test_push_blocks_secret_in_commit_message() -> list[str]:
+    errors = []
+    with tempfile.TemporaryDirectory() as tmp:
+        repo = Path(tmp) / "repo"
+        setup_repo(repo)
+        subprocess.run(
+            ["git", "commit", "--allow-empty", "--no-verify", "-q", "-m", f"backup {FAKE['ghp']}"],
+            cwd=repo,
+            check=True,
+        )
+        bare = Path(tmp) / "bare.git"
+        run(["git", "init", "--bare", "-q", str(bare)], cwd=tmp)
+        run(["git", "remote", "add", "origin", str(bare)], cwd=repo)
+        r = subprocess.run(["git", "push", "-u", "origin", "HEAD"], cwd=repo, capture_output=True, text=True)
+        if r.returncode == 0:
+            errors.append("pre-push missed a secret that only exists in the commit message")
+    return errors
+
+
+def test_push_gitleaks_scoped_to_range() -> list[str]:
+    errors = []
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp)
+        bindir = tmp_path / "bin"
+        bindir.mkdir()
+        record = tmp_path / "gitleaks-args"
+        fake = bindir / "gitleaks"
+        fake.write_text(
+            "#!/bin/sh\n"
+            f"printf '%s\\n' \"$*\" >> {record}\n"
+            "exit 0\n"
+        )
+        fake.chmod(fake.stat().st_mode | stat.S_IEXEC)
+
+        repo = tmp_path / "repo"
+        setup_repo(repo)
+        (repo / "old.md").write_text(f"stripe {FAKE['stripe']}\n")
+        run(["git", "add", "old.md"], cwd=repo)
+        subprocess.run(["git", "commit", "--no-verify", "-q", "-m", "old leak"], cwd=repo, check=True)
+        bare = tmp_path / "bare.git"
+        run(["git", "init", "--bare", "-q", str(bare)], cwd=tmp)
+        run(["git", "remote", "add", "origin", str(bare)], cwd=repo)
+        subprocess.run(["git", "push", "--no-verify", "-u", "origin", "HEAD"], cwd=repo, check=True)
+
+        run(["git", "rm", "-q", "old.md"], cwd=repo)
+        subprocess.run(["git", "commit", "-q", "-m", "drop leaked file"], cwd=repo, check=True)
+
+        env = os.environ.copy()
+        env["PATH"] = f"{bindir}:{env.get('PATH', '')}"
+        r = subprocess.run(
+            ["git", "push", "origin", "HEAD"],
+            cwd=repo,
+            capture_output=True,
+            text=True,
+            env=env,
+        )
+        if r.returncode != 0:
+            errors.append(f"push of a clean range failed: {r.stdout}{r.stderr}")
+            return errors
+
+        logged = record.read_text() if record.exists() else ""
+        if "--log-opts" not in logged:
+            errors.append(f"gitleaks was not limited to the push range: {logged!r}")
+        if "\ndetect " in f"\n{logged}" and "--log-opts" not in logged.split("detect", 1)[-1]:
+            errors.append(f"gitleaks detect scanned outside the push range: {logged!r}")
+    return errors
+
+
 def test_hooks_block_history_only_secret() -> list[str]:
     errors = []
     with tempfile.TemporaryDirectory() as tmp:
@@ -288,6 +387,9 @@ def main() -> int:
         ("scanner allows clean", test_scanner_allows_clean),
         ("no allow-line backdoor", test_allow_line_not_a_backdoor),
         ("hooks", test_hooks_block_commit_and_force_add),
+        ("binary secret", test_scanner_detects_binary),
+        ("commit message secret", test_push_blocks_secret_in_commit_message),
+        ("gitleaks push range", test_push_gitleaks_scoped_to_range),
         ("history-only secret", test_hooks_block_history_only_secret),
         ("dotfiles tree", test_dotfiles_tree_clean),
     ]

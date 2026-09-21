@@ -34,7 +34,7 @@ Do:
 - Oh My Zsh → `$XDG_DATA_HOME/oh-my-zsh`
 - Git → `~/.config/git` — never `~/.gitconfig`
 - Runtimes → mise — never `~/.nvm` / `~/.pyenv`
-- macOS PATH in `$ZDOTDIR/.zprofile` (after `path_helper`)
+- macOS PATH in `$ZDOTDIR/path.zsh` (login: `.zprofile` after `path_helper`; also sourced by `.zshrc`)
 - Backups → `$XDG_STATE_HOME/dotfiles-backup-*`
 
 Do not create: `~/.zshrc`, `~/.oh-my-zsh`, `~/.nvm`, `~/.npm`, `~/.gitconfig`, `~/dotfiles`, `~/AGENTS.md`.

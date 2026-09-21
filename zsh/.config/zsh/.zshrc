@@ -34,6 +34,7 @@ setopt HIST_IGNORE_ALL_DUPS HIST_FIND_NO_DUPS SHARE_HISTORY HIST_REDUCE_BLANKS
 source "$ZSH/oh-my-zsh.sh"
 
 source "$ZDOTDIR/aliases.zsh"
+source "$ZDOTDIR/path.zsh"
 
 command -v mise >/dev/null && eval "$(mise activate zsh)"
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"

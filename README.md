@@ -12,7 +12,7 @@ Clean-home setup for Apple Silicon. The old tree is frozen on [`macos-legacy`](h
 | Git | `~/.config/git` |
 | Kitty | `~/.config/kitty` (Catppuccin Mocha, same as Arch) |
 | Node / runtimes | mise → `~/.local/share/mise` |
-| PATH (Homebrew) | `$ZDOTDIR/.zprofile` — after macOS `path_helper` |
+| PATH (Homebrew) | `$ZDOTDIR/path.zsh` — login via `.zprofile` (after `path_helper`), also interactive shells |
 | Agent rules | `~/.agents/AGENTS.md` |
 
 ---
