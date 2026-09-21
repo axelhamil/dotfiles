@@ -37,6 +37,14 @@
   "project_panel": {
     "dock": "left"
   },
+  "gutter": {
+    "line_numbers": true,
+    "min_line_number_digits": 3,
+    "runnables": false,
+    "breakpoints": false,
+    "bookmarks": false,
+    "folds": true
+  },
   "window_title_format": "${projectName}${separator}${fileName}",
   "autosave": "on_focus_change",
   "code_lens": "on",
@@ -49,13 +57,28 @@
   "session": {
     "trust_all_worktrees": true
   },
+  "diff_view_style": "split",
   "git": {
     "inline_blame": {
       "enabled": true,
       "delay_ms": 0,
       "location": "inline",
       "show_commit_summary": false
-    }
+    },
+    "file_diff": {
+      "show_full_file": true
+    },
+    "hunk_style": "staged_hollow",
+    "show_stage_restore_buttons": true
+  },
+  "git_panel": {
+    "dock": "left",
+    "file_icons": true,
+    "show_count_badge": true,
+    "diff_stats": true,
+    "group_by": "staging",
+    "entry_primary_click_action": "file_diff",
+    "starts_open": false
   },
   "terminal": {
     "font_family": "FiraCode Nerd Font",
