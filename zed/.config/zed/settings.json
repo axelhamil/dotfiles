@@ -11,7 +11,8 @@
     "dock": "right",
     "sidebar_side": "right",
     "favorite_models": [],
-    "model_parameters": []
+    "model_parameters": [],
+    "play_sound_when_agent_done": true
   },
   "agent_servers": {
     "cursor": {
@@ -21,33 +22,93 @@
       "type": "registry"
     }
   },
+  "context_servers": {
+    "mcp-server-context7": {
+      "enabled": true,
+      "remote": false
+    },
+    "mcp-server-github": {
+      "enabled": true,
+      "remote": false
+    }
+  },
   "base_keymap": "Zed",
+  "restore_on_startup": "last_workspace",
   "theme": {
     "mode": "dark",
     "light": "One Light",
     "dark": "Catppuccin Mocha"
   },
   "icon_theme": "Catppuccin Mocha",
+  "theme_overrides": {
+    "Catppuccin Mocha": {
+      "syntax": {
+        "comment": { "font_style": "italic" },
+        "comment.doc": { "font_style": "italic" },
+        "keyword": { "font_style": "italic" },
+        "type": { "font_style": "italic" },
+        "variable.parameter": { "font_style": "italic" },
+        "attribute": { "font_style": "italic" }
+      }
+    }
+  },
   "ui_font_size": 16,
   "buffer_font_size": 15,
   "buffer_font_family": "FiraCode Nerd Font",
   "buffer_font_features": {
     "calt": true
   },
+  "cursor_shape": "underline",
+  "current_line_highlight": "line",
+  "relative_line_numbers": "enabled",
+  "tab_size": 2,
+  "wrap_guides": [80, 120],
+  "colorize_brackets": true,
+  "unnecessary_code_fade": 0.5,
+  "hover_popover_delay": 0,
+  "auto_signature_help": true,
+  "show_signature_help_after_edits": true,
+  "format_on_save": "on",
+  "ensure_final_newline_on_save": true,
+  "remove_trailing_whitespace_on_save": true,
+  "prettier": {
+    "allowed": false
+  },
+  "sticky_scroll": {
+    "enabled": true
+  },
+  "indent_guides": {
+    "enabled": true,
+    "coloring": "indent_aware"
+  },
+  "scrollbar": {
+    "show": "auto",
+    "git_diff": true,
+    "diagnostics": "all",
+    "axes": {
+      "horizontal": false,
+      "vertical": true
+    }
+  },
   "project_panel": {
-    "dock": "left"
+    "dock": "left",
+    "git_status": true,
+    "auto_reveal_entries": true,
+    "auto_fold_dirs": true
   },
   "gutter": {
     "line_numbers": true,
-    "min_line_number_digits": 3,
+    "min_line_number_digits": 2,
     "runnables": false,
     "breakpoints": false,
     "bookmarks": false,
-    "folds": true
+    "folds": false,
+    "git_gutter_width": { "custom": 3 }
   },
   "window_title_format": "${projectName}${separator}${fileName}",
   "autosave": "on_focus_change",
   "code_lens": "on",
+  "inline_code_actions": false,
   "inlay_hints": {
     "enabled": false,
     "toggle_on_modifiers_press": {
@@ -59,11 +120,13 @@
   },
   "diff_view_style": "split",
   "git": {
+    "git_gutter": "tracked_files",
     "inline_blame": {
       "enabled": true,
-      "delay_ms": 0,
+      "delay_ms": 400,
       "location": "inline",
-      "show_commit_summary": false
+      "show_commit_summary": false,
+      "min_column": 80
     },
     "file_diff": {
       "show_full_file": true
@@ -72,7 +135,7 @@
     "show_stage_restore_buttons": true
   },
   "git_panel": {
-    "dock": "left",
+    "dock": "right",
     "file_icons": true,
     "show_count_badge": true,
     "diff_stats": true,
@@ -82,8 +145,34 @@
   },
   "terminal": {
     "font_family": "FiraCode Nerd Font",
-    "copy_on_select": true
+    "font_size": 15,
+    "copy_on_select": true,
+    "shell": {
+      "program": "zsh"
+    }
   },
+  "file_types": {
+    "Env": [".env", ".env.*"]
+  },
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/.jj",
+    "**/.sl",
+    "**/.repo",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings",
+    "**/node_modules",
+    "**/.next",
+    "**/dist",
+    "**/coverage",
+    "**/.turbo",
+    "**/.output"
+  ],
 
   "auto_install_extensions": {
     "biome": true,
@@ -129,11 +218,67 @@
           },
           "updateImportsOnFileMove": {
             "enabled": "always"
+          },
+          "suggest": {
+            "completeFunctionCalls": true
+          },
+          "preferences": {
+            "importModuleSpecifier": "non-relative"
+          },
+          "inlayHints": {
+            "parameterNames": {
+              "enabled": "literals",
+              "suppressWhenArgumentMatchesName": true
+            },
+            "parameterTypes": {
+              "enabled": true
+            },
+            "variableTypes": {
+              "enabled": true,
+              "suppressWhenTypeMatchesName": true
+            },
+            "propertyDeclarationTypes": {
+              "enabled": true
+            },
+            "functionLikeReturnTypes": {
+              "enabled": true
+            },
+            "enumMemberValues": {
+              "enabled": true
+            }
           }
         },
         "javascript": {
           "updateImportsOnFileMove": {
             "enabled": "always"
+          },
+          "suggest": {
+            "completeFunctionCalls": true
+          },
+          "preferences": {
+            "importModuleSpecifier": "non-relative"
+          },
+          "inlayHints": {
+            "parameterNames": {
+              "enabled": "literals",
+              "suppressWhenArgumentMatchesName": true
+            },
+            "parameterTypes": {
+              "enabled": true
+            },
+            "variableTypes": {
+              "enabled": true,
+              "suppressWhenTypeMatchesName": true
+            },
+            "propertyDeclarationTypes": {
+              "enabled": true
+            },
+            "functionLikeReturnTypes": {
+              "enabled": true
+            },
+            "enumMemberValues": {
+              "enabled": true
+            }
           }
         }
       }
