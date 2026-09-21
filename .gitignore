@@ -1,49 +1,158 @@
+# OS
 .DS_Store
-*.zwc
-*.old
-*.bak
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+Icon?
+
+# Editors / swap
 *.swp
 *.swo
-*.tmp
+*.swn
 *~
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.rej
+*.zwc
 
-# History / cache
+# Logs / history / cache
 **/.zsh_history
+**/.zhistory
+**/.bash_history
+**/.python_history
+**/.lesshst
+**/.wget-hsts
 **/.cache/
 **/.zcompdump*
+*.log
+*.sqlite
+*.sqlite3
+*.db
 
-# Secrets — never commit
+# Dependencies / build
+**/node_modules/
+**/__pycache__/
+**/.venv/
+**/venv/
+**/dist/
+**/build/
+**/.next/
+**/.turbo/
+*.pyc
+*.egg-info/
+
+# ── Secrets: keys & certs ──
 **/.ssh/
+**/.gnupg/
 **/*.key
 **/*.pem
 **/*.p12
 **/*.pfx
-**/.gnupg/
-**/.git-credentials
-**/.netrc
-**/.pypirc
-**/.npmrc
+**/*.p8
+**/*.p7b
+**/*.der
+**/*.crt
+**/*.cer
+**/*.kdbx
+**/*.ovpn
+**/*.rdp
+**/id_rsa
+**/id_rsa.pub
+**/id_dsa
+**/id_ecdsa
+**/id_ed25519
+**/id_ed25519.pub
+**/id_github
+**/id_github.pub
+**/id_gitlab
+**/id_gitlab.pub
+**/authorized_keys
+**/known_hosts
+**/known_hosts.old
+**/allowed_signers
+
+# ── Secrets: env & credentials ──
 **/.env
 **/.env.*
 !**/.env.example
-**/*credentials*
-**/*secret*
-**/*token*
-**/hosts.yml
-**/id_rsa
-**/id_ed25519
-**/id_github
-**/id_gitlab
-
-# Machine-local identity (email, signing key)
-git/.config/git/local
+!**/.env.sample
+**/.envrc
+**/.netrc
+**/.pypirc
+**/.npmrc
+**/.npm-token
+**/.yarnrc
+**/.yarnrc.yml
+**/.git-credentials
+**/.gitconfig.local
 **/.config/git/local
+git/.config/git/local
+**/credentials
+**/credentials.json
+**/credentials.json.json
+**/*credentials*
+**/service-account*.json
+**/application_default_credentials.json
+**/secrets.yaml
+**/secrets.yml
+**/secrets.json
+**/secret.yaml
+**/secret.yml
+**/.secrets
+**/.secret
+**/hosts.yml
+**/.pgpass
+**/.my.cnf
+**/.aws/
+**/.azure/
+**/.gcloud/
+**/.kube/config
+**/kubeconfig
+**/kubeconfig.*
+**/.docker/config.json
+**/.terraform.tfstate
+**/*.tfstate
+**/*.tfstate.*
+**/.terraform/
+**/.pulumi/
+**/vault.json
+**/.vault-token
 
-# Agent local overrides / auth
-AGENTS.override.md
-**/.claude/settings.local.json
+# ── Secrets: tokens by filename ──
+**/*token*
+!**/.env.example
+**/auth.json
 **/.codex/auth.json
 **/.codex/session.json
+**/.claude/settings.local.json
+**/.cursor/mcp.json
+AGENTS.override.md
+**/.agents/AGENTS.override.md
 
-**/node_modules/
-**/__pycache__/
+# Cloud / SaaS dumps
+**/.config/gh/hosts.yml
+**/.config/gcloud/
+**/.config/op/
+**/.config/1password/
+
+# Agent / tool local auth
+**/.claude/*.json
+**/.codex/*.json
+!**/.codex/config.toml
+
+# Archives that often hide keys
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+*.dmg
+*.iso

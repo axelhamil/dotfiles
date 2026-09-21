@@ -173,6 +173,12 @@ cleanup_home() {
   fi
 }
 
+install_hooks() {
+  chmod +x "$DOTFILES/.githooks/"* "$DOTFILES/scripts/check-leaks.py"
+  git -C "$DOTFILES" config --local core.hooksPath .githooks
+  ok "secret-scan hooks (pre-commit + pre-push)"
+}
+
 main() {
   if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
     usage
@@ -191,6 +197,7 @@ main() {
   done
 
   link_agent_adapters
+  install_hooks
 
   cleanup_home
   ok "done — open a new terminal (or run: exec zsh)"

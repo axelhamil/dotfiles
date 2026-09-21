@@ -1,0 +1,15 @@
+title = "dotfiles"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "placeholders only"
+regexes = [
+  '''YOUR_EMAIL''',
+  '''example\.com''',
+  '''changeme''',
+]
+paths = [
+  '''(^|/)git/\.config/git/local\.example$''',
+]

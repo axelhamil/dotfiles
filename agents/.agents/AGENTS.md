@@ -70,3 +70,5 @@ This repo is public-safe config only. Never add:
 - Tool auth: `~/.codex/auth.json`, Claude/Cursor local settings
 
 If an installer writes a secret into `$HOME` or this repo, move it out or gitignore it. Do not commit it.
+
+`scripts/check-leaks.py` runs on every commit and before every push (`.githooks`). Never `--no-verify`.

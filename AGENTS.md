@@ -8,3 +8,4 @@ This repository is the macOS machine config. Global agent rules live in `~/.agen
 - Original tree: branch `macos-legacy`. This tree: `macos-2.0`.
 - Bootstrap: `./bootstrap.sh`. Optional packages: `aerospace`.
 - Config only in git. Identity and secrets stay on the machine (`~/.config/git/local`, `~/.ssh`).
+- Pre-commit / pre-push run `scripts/check-leaks.py`. Never `--no-verify`.
