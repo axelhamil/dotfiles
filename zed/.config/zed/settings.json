@@ -96,6 +96,18 @@
     "auto_reveal_entries": true,
     "auto_fold_dirs": true
   },
+  "toolbar": {
+    "breadcrumbs": true,
+    "quick_actions": true,
+    "selections_menu": true,
+    "agent_review": true,
+    "code_actions": true
+  },
+  "title_bar": {
+    "show_menus": true,
+    "show_branch_name": true,
+    "show_project_items": true
+  },
   "gutter": {
     "line_numbers": true,
     "min_line_number_digits": 2,
