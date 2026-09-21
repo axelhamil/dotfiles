@@ -1,0 +1,39 @@
+[include]
+	path = ~/.config/git/local
+[user]
+	name = axelhamil
+[init]
+	defaultBranch = main
+[commit]
+	verbose = true
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+[fetch]
+	prune = true
+[rerere]
+	enabled = true
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
+[branch]
+	sort = -committerdate
+[column]
+	ui = auto
+[help]
+	autocorrect = prompt
+[core]
+	editor = nvim
+[merge]
+	conflictstyle = zdiff3
+[diff]
+	colorMoved = default
+	algorithm = histogram
+[color]
+	ui = auto
+[color "status"]
+	added = green bold
+	changed = magenta bold
+	untracked = cyan bold

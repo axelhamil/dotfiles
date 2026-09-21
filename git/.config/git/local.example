@@ -1,0 +1,10 @@
+[user]
+	email = YOUR_EMAIL
+# Uncomment when SSH signing is set up:
+#	signingkey = ~/.ssh/id_github
+[commit]
+	gpgsign = false
+# [gpg]
+#	format = ssh
+# [gpg "ssh"]
+#	allowedSignersFile = ~/.ssh/allowed_signers

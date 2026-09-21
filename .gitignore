@@ -1,44 +1,26 @@
-**/**/containers
-**/**/gcloud
-**/raycast
-*/.DS_Store
-**/Thumbs.db
-**/Icon?
+.DS_Store
+*.zwc
+*.old
+*.bak
+*.swp
+*.swo
+*.tmp
+*~
 
 **/.zsh_history
-**/.bash_history
-**/.fish_history
+**/.cache/
 
 **/.ssh/
 **/*.key
 **/*.pem
 **/.gnupg/
-
-**/.npmrc
 **/.git-credentials
 **/.netrc
 **/.env
 **/.env.*
-
-**/.cache/
-**/*.swp
-**/*.swo
-**/*.tmp
-**/*~
+**/.npmrc
 
 **/node_modules/
-**/package-lock.json
-**/pnpm-lock.yaml
-**/yarn.lock
-**/dist/
-**/build/
-**/*.tsbuildinfo
+**/__pycache__/
 
-**/homebrew/
-**/nix/
-**/result/
-
-**/oh-my-zsh/.git/
-
-**/.stow-local-ignore
-
+git/.config/git/local
