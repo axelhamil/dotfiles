@@ -1,55 +1,65 @@
-# Dotfiles · macOS
+# Dotfiles · macOS 2.0
 
-Personal configuration for my macOS environment.
+Clean-home setup for Apple Silicon. The old tree is frozen on [`macos-legacy`](https://github.com/axelhamil/dotfiles/tree/macos-legacy). Arch Linux lives on [`arch`](https://github.com/axelhamil/dotfiles/tree/arch).
 
-Managed with a small bootstrap script (stow-style symlinks).
-Arch Linux config lives on the [`arch`](https://github.com/axelhamil/dotfiles/tree/arch) branch.
-
-Home stays clean:
+**Rule:** `$HOME` stays empty of app dotfiles. One exception: `~/.zshenv` (sets `ZDOTDIR`).
 
 | What | Where |
 |------|--------|
 | This repo | `~/.dotfiles` |
 | Oh My Zsh | `~/.local/share/oh-my-zsh` |
-| Zsh config | `~/.config/zsh` (`ZDOTDIR`) |
-| Git config | `~/.config/git` |
-| Only zsh file in `$HOME` | `~/.zshenv` |
-
----
-
-## Structure
-
-```
-.
-├── bootstrap.sh     # install OMZ + plugins, symlink packages
-├── zsh/             # .zshenv + XDG zsh modules (aliases, path, nvm, p10k)
-├── git/             # XDG git config
-├── aerospace/       # optional window manager
-└── scripts/         # macos-tweaks.sh
-```
+| Zsh | `~/.config/zsh` (`ZDOTDIR`) |
+| Git | `~/.config/git` |
+| Node / runtimes | mise → `~/.local/share/mise` |
+| PATH (Homebrew) | `$ZDOTDIR/.zprofile` — after macOS `path_helper` |
+| Agent rules | `~/.agents/AGENTS.md` |
 
 ---
 
 ## Setup
 
 ```bash
-git clone -b macos https://github.com/axelhamil/dotfiles.git ~/.dotfiles
+git clone -b macos-2.0 git@github.com:axelhamil/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./bootstrap.sh
 ```
 
-Optional packages:
+Optional: `./bootstrap.sh zsh git npm mise aerospace`
+
+Toolchain (when Homebrew is installed):
 
 ```bash
-./bootstrap.sh zsh git aerospace
+brew bundle --file=~/.dotfiles/Brewfile
 ```
 
-Copy `git/.config/git/local.example` to `~/.config/git/local` and fill in email / signing key.
+Copy `git/.config/git/local.example` → `~/.config/git/local` if it was not created.
+
+---
+
+## Layout
+
+```
+AGENTS.md        # this repo (Cursor / Codex / Copilot)
+CLAUDE.md        # @AGENTS.md — Claude Code
+agents/          # stowed to ~/.agents (global) + Codex/Claude adapters
+bootstrap.sh
+Brewfile
+zsh/ git/ npm/ mise/
+aerospace/       # optional
+scripts/macos-tweaks.sh
+```
+
+Cursor User Rules (one line, for workspaces that are not this repo):
+
+```
+Always follow ~/.agents/AGENTS.md
+```
 
 ---
 
 ## Requirements
 
 - macOS + zsh
-- [oh-my-zsh](https://ohmyz.sh/) + [powerlevel10k](https://github.com/romkatv/powerlevel10k) (installed by bootstrap)
-- A Nerd Font in the terminal (for p10k icons)
+- Oh My Zsh + powerlevel10k (bootstrap)
+- A Nerd Font in the terminal
+- Homebrew + Brewfile tools (optional, for eza/bat/mise/…)

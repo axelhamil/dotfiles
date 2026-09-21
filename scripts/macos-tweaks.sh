@@ -9,6 +9,7 @@ defaults write com.apple.dock launchanim -bool false
 defaults write com.apple.dock expose-animation-duration -float 0.1
 
 # 🗂 Finder settings
+defaults write com.apple.finder AppleShowAllFiles -bool true
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"

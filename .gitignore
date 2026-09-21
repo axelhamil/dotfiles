@@ -7,20 +7,43 @@
 *.tmp
 *~
 
+# History / cache
 **/.zsh_history
 **/.cache/
+**/.zcompdump*
 
+# Secrets — never commit
 **/.ssh/
 **/*.key
 **/*.pem
+**/*.p12
+**/*.pfx
 **/.gnupg/
 **/.git-credentials
 **/.netrc
+**/.pypirc
+**/.npmrc
 **/.env
 **/.env.*
-**/.npmrc
+!**/.env.example
+**/*credentials*
+**/*secret*
+**/*token*
+**/hosts.yml
+**/id_rsa
+**/id_ed25519
+**/id_github
+**/id_gitlab
+
+# Machine-local identity (email, signing key)
+git/.config/git/local
+**/.config/git/local
+
+# Agent local overrides / auth
+AGENTS.override.md
+**/.claude/settings.local.json
+**/.codex/auth.json
+**/.codex/session.json
 
 **/node_modules/
 **/__pycache__/
-
-git/.config/git/local

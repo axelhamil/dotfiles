@@ -25,20 +25,17 @@ DISABLE_COMPFIX="true"
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 
-source "$ZSH/oh-my-zsh.sh"
-
-HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+mkdir -p "$XDG_STATE_HOME/zsh" "$XDG_CACHE_HOME/zsh"
+HISTFILE="$XDG_STATE_HOME/zsh/history"
 HISTSIZE=10000
 SAVEHIST=10000
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_FIND_NO_DUPS
-setopt SHARE_HISTORY
-setopt HIST_REDUCE_BLANKS
+setopt HIST_IGNORE_ALL_DUPS HIST_FIND_NO_DUPS SHARE_HISTORY HIST_REDUCE_BLANKS
+
+source "$ZSH/oh-my-zsh.sh"
 
 source "$ZDOTDIR/aliases.zsh"
-source "$ZDOTDIR/path.zsh"
-source "$ZDOTDIR/nvm.zsh"
 
+command -v mise >/dev/null && eval "$(mise activate zsh)"
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 
 [[ -f "$ZDOTDIR/.p10k.zsh" ]] && source "$ZDOTDIR/.p10k.zsh"
