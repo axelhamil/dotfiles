@@ -1,13 +1,1 @@
-[
-  {
-    "label": "Markdown preview (grip)",
-    "command": "grip",
-    "args": ["\"$ZED_FILE\"", "--browser", "--quiet"],
-    "use_new_terminal": false,
-    "allow_concurrent_runs": false,
-    "reveal": "never",
-    "hide": "on_success",
-    "shell": "system",
-    "tags": ["markdown-preview"]
-  }
-]
+[]
