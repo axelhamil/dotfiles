@@ -3,12 +3,19 @@
 # Lazy chat: upstream runs `agent create-chat` (1.5s, network) before the first
 # prompt; it is stripped here and deferred to first use of agent / please-fix /
 # agent mode. Cache is rebuilt automatically when the agent binary changes.
-_cursor_int="${XDG_CACHE_HOME:-$HOME/.cache}/cursor-agent-shell-integration.zsh"
-if [[ ! -s "$_cursor_int" || "$_cursor_int" -ot "$HOME/.local/bin/agent" ]]; then
-  ~/.local/bin/agent shell-integration zsh \
-    | sed '/^# Create a new chat session at the start of each shell session$/,/^fi$/d' \
-    > "$_cursor_int"
-  cat >> "$_cursor_int" <<'CURSOR_LAZY_CHAT'
+#
+# Skip entirely inside Zed. The generated snippet `exec`s `agent record`, which
+# replaces the login shell Zed uses to capture PATH. The terminal then stays on
+# "Starting terminal..." and language servers never start.
+_ppid_comm=""
+[[ -r /proc/$PPID/comm ]] && _ppid_comm=$(</proc/$PPID/comm)
+if [[ -z "$ZED_TERM" && "$_ppid_comm" != zed-editor && "$_ppid_comm" != zed ]]; then
+  _cursor_int="${XDG_CACHE_HOME:-$HOME/.cache}/cursor-agent-shell-integration.zsh"
+  if [[ ! -s "$_cursor_int" || "$_cursor_int" -ot "$HOME/.local/bin/agent" ]]; then
+    ~/.local/bin/agent shell-integration zsh \
+      | sed '/^# Create a new chat session at the start of each shell session$/,/^fi$/d' \
+      > "$_cursor_int"
+    cat >> "$_cursor_int" <<'CURSOR_LAZY_CHAT'
 
 _cursor_chat_ensure() {
   [[ -n "$CURSOR_AGENT_CHAT_ID" ]] && return
@@ -32,9 +39,11 @@ if [[ -t 0 ]] && (( $+functions[agent] )); then
   zle -N please-fix-or-accept-line
 fi
 CURSOR_LAZY_CHAT
+  fi
+  source "$_cursor_int"
+  unset _cursor_int
 fi
-source "$_cursor_int"
-unset _cursor_int
+unset _ppid_comm
 # Powerlevel10k instant prompt
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"

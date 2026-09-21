@@ -22,6 +22,7 @@ Personal configuration for my Arch Linux + Hyprland environment.
 | `wofi` | App launcher |
 | `wlogout` | Logout screen + icons |
 | `fastfetch` | System info display |
+| `zed` | Zed 1.20 (vtsls + Biome, Catppuccin, FiraCode) |
 
 ---
 
@@ -44,7 +45,7 @@ Personal configuration for my Arch Linux + Hyprland environment.
    ```
    Or pick individual packages:
    ```bash
-   stow zsh git tmux kitty hypr waybar
+   stow zsh git tmux kitty hypr waybar zed
    ```
 
 ---
