@@ -544,7 +544,7 @@ hl.config({
             color = { colors = { "rgba(cba6f766)", "rgba(89b4fa66)" }, angle = 45 },
         },
         blur = {
-            enabled = true,
+            enabled = false,
             size = 6,
             passes = 2,
             xray = false,

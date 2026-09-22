@@ -66,7 +66,6 @@
   "wrap_guides": [120],
   "colorize_brackets": true,
   "unnecessary_code_fade": 0.5,
-  "hover_popover_delay": 0,
   "auto_signature_help": true,
   "show_signature_help_after_edits": true,
   "format_on_save": "on",
@@ -148,6 +147,7 @@
     "show_stage_restore_buttons": true
   },
   "git_panel": {
+    "tree_view": false,
     "dock": "right",
     "file_icons": true,
     "show_count_badge": true,
