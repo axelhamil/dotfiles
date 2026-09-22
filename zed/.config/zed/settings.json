@@ -58,7 +58,7 @@
   "buffer_font_features": {
     "calt": true
   },
-  "cursor_shape": "underline",
+  "cursor_shape": "block",
   "current_line_highlight": "line",
   "relative_line_numbers": "enabled",
   "tab_size": 2,
@@ -66,8 +66,10 @@
   "wrap_guides": [120],
   "colorize_brackets": true,
   "unnecessary_code_fade": 0.5,
-  "auto_signature_help": true,
-  "show_signature_help_after_edits": true,
+  "hover_popover_enabled": true,
+  "hover_popover_delay": 300,
+  "hover_popover_sticky": true,
+  "hover_popover_hiding_delay": 300,
   "format_on_save": "on",
   "ensure_final_newline_on_save": true,
   "remove_trailing_whitespace_on_save": true,
