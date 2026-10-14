@@ -67,7 +67,7 @@ hl.workspace_rule({
     monitor = "HDMI-A-1",
 })
 
-local terminal = "kitty"
+local terminal = "kitty --single-instance"
 local fileManager = "nautilus"
 local menu = "walker"
 
@@ -604,7 +604,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("until awww query &>/dev/null; do sleep 0.1; done; awww img ~/Images/wallpapers/l-art-numerique-avec-le-paysage-urbain-et-l-architecture.jpg --transition-type none")
     hl.exec_cmd("walker --gapplication-service")
-    hl.exec_cmd("kitty --class scratch-term", { workspace = "special:term silent", no_initial_focus = true })
+    hl.exec_cmd("kitty --single-instance --class scratch-term", { workspace = "special:term silent", no_initial_focus = true })
     hl.exec_cmd("nautilus", { workspace = "special:files silent", no_initial_focus = true })
     hl.exec_cmd("cider", { workspace = "special:music silent", no_initial_focus = true })
     hl.exec_cmd("swaync")
