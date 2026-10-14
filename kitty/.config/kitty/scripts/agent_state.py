@@ -3,16 +3,15 @@ import os
 import subprocess
 import sys
 import time
-import zlib
 
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from kitty_link import KittyTarget, prune_dead, resolve_target, set_claude_var  # noqa: E402
-from workspace import AgentRecord, live_records, locate, read_record, record_lock, record_path, remove_record, worst_state, write_record  # noqa: E402
+from workspace import AgentRecord, notification_id, window_records, locate, read_record, record_lock, record_path, remove_record, worst_state, write_record  # noqa: E402
 
 WAYBAR_SIGNAL = "-RTMIN+12"
-NOTIFY_TIMEOUT_MS = 15000
+NOTIFY_TIMEOUT_MS = 8000
 FOCUS_SCRIPT = os.path.join(os.path.dirname(os.path.realpath(__file__)), "focus_agent.py")
 
 
@@ -41,10 +40,6 @@ def tmux_session(pane: str) -> str:
     return tmux("display-message", "-p", "-t", pane, "#{session_name}") if pane else ""
 
 
-def notification_id(session_id: str) -> str:
-    return str(zlib.crc32(session_id.encode()) & 0x7FFFFFFF)
-
-
 def describe(cwd: str) -> str:
     location = locate(cwd)
     parts = [location.project, location.worktree, location.branch]
@@ -69,13 +64,12 @@ def notify(record: AgentRecord, target: KittyTarget | None) -> None:
         return
 
     title = "Claude attend ta réponse" if record.state == "waiting" else "Claude a terminé"
-    urgency = "critical" if record.state == "waiting" else "normal"
     body = describe(record.cwd)
     if record.message:
         body = f"{body}\n{record.message}"
 
     action = subprocess.run(
-        ["dunstify", "-a", "Claude Code", "-u", urgency, "-t", str(NOTIFY_TIMEOUT_MS), "-r", replace_id, "-A", "default,Ouvrir", title, body],
+        ["dunstify", "-a", "Claude Code", "-u", "normal", "-h", "int:transient:1", "-t", str(NOTIFY_TIMEOUT_MS), "-r", replace_id, "-A", "default,Ouvrir", title, body],
         capture_output=True,
         text=True,
         check=False,
@@ -86,8 +80,7 @@ def notify(record: AgentRecord, target: KittyTarget | None) -> None:
 
 
 def window_state(target: KittyTarget) -> str:
-    states = [record.state for record in live_records() if record.kitty_socket == target.socket and record.kitty_window == target.window_id]
-    return worst_state(states)
+    return worst_state(record.state for record in window_records(target.socket, target.window_id))
 
 
 def sync_kitty(record: AgentRecord, target: KittyTarget | None) -> None:

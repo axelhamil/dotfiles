@@ -1,6 +1,7 @@
 import fcntl
 import json
 import os
+import subprocess
 import time
 import zlib
 from contextlib import contextmanager
@@ -206,9 +207,22 @@ def live_records() -> list[AgentRecord]:
     return [record for record in all_records() if record.is_alive()]
 
 
+def notification_id(session_id: str) -> str:
+    return str(zlib.crc32(session_id.encode()) & 0x7FFFFFFF)
+
+
+def window_records(socket: str, window_id: int) -> list[AgentRecord]:
+    return [record for record in live_records() if record.kitty_socket == socket and record.kitty_window == window_id]
+
+
+def dismiss_notifications(socket: str, window_id: int) -> None:
+    for record in window_records(socket, window_id):
+        subprocess.Popen(["dunstify", "-C", notification_id(record.session_id)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
 def acknowledge_done(socket: str, window_id: int) -> None:
-    for record in live_records():
-        if record.state != "done" or record.kitty_socket != socket or record.kitty_window != window_id:
+    for record in window_records(socket, window_id):
+        if record.state != "done":
             continue
 
         with record_lock(record.session_id, blocking=False) as acquired:

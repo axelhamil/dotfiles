@@ -8,7 +8,7 @@ from kitty.window import Window
 
 sys.path.insert(0, os.path.dirname(__file__))
 
-from workspace import acknowledge_done  # noqa: E402
+from workspace import acknowledge_done, dismiss_notifications  # noqa: E402
 
 CLAUDE_VAR = "claude"
 
@@ -41,8 +41,11 @@ def on_set_user_var(boss: Boss, window: Window, data: dict[str, Any]) -> None:
 
 
 def on_focus_change(boss: Boss, window: Window, data: dict[str, Any]) -> None:
-    if data["focused"]:
-        mark_seen(boss, window)
+    if not data["focused"]:
+        return
+
+    dismiss_notifications(boss.listening_on, window.id)
+    mark_seen(boss, window)
 
 
 def on_close(boss: Boss, window: Window, data: dict[str, Any]) -> None:
