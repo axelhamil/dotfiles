@@ -2,3 +2,4 @@
 *.zwc
 *.old
 *.bak
+__pycache__/
