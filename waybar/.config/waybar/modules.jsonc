@@ -107,6 +107,15 @@
 
   // ── Indicateurs d'état : chacun se masque tout seul quand il n'a
   //    rien à dire (script sans sortie => module invisible).
+  "custom/claude": {
+    "format": "<span color='#7f849c'>󰚩</span> {}",
+    "interval": 30,
+    "signal": 12,
+    "exec": "python3 ~/.config/kitty/scripts/waybar_agents.py",
+    "return-type": "json",
+    "on-click": "~/.config/waybar/popup.sh popup-agents kitty --class popup-agents python3 ~/.config/kitty/scripts/agents.py"
+  },
+
   "custom/docker": {
     "format": "<span color='#7f849c'>󰡨</span> {}",
     "interval": 15,

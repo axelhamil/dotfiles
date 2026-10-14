@@ -240,6 +240,7 @@ hl.device({
 local mainMod = "SUPER"
 
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
+hl.bind(mainMod .. " + SHIFT + Return", hl.dsp.exec_cmd(terminal .. " python3 ~/.config/kitty/scripts/projects.py"))
 hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("hyprctl reload"))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + CTRL + SHIFT + M", hl.dsp.exit())
@@ -403,7 +404,7 @@ hl.window_rule({
 -- popups moniteur système ouverts depuis le cluster hardware de waybar
 hl.window_rule({
     match = {
-        class = "^(popup-btop|popup-gpu|popup-docker|popup-updates)$",
+        class = "^(popup-btop|popup-gpu|popup-docker|popup-updates|popup-agents)$",
     },
     float = true,
     move = "50% 3.5%",

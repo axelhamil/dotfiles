@@ -116,6 +116,7 @@ window#waybar.hidden { opacity: 0.0; }
 #temperature,
 #memory,
 #custom-gpu,
+#custom-claude,
 #custom-docker,
 #custom-updates,
 #custom-obs,
@@ -166,6 +167,11 @@ window#waybar.hidden { opacity: 0.0; }
 #custom-gpu.unavailable { color: @overlay; }
 
 /* ── indicateurs d'état ───────────────────────────────────────────── */
+#custom-claude          { color: @overlay; }
+#custom-claude.running  { color: @yellow; }
+#custom-claude.done     { color: @green; }
+#custom-claude.waiting  { color: @red; animation: pulse 1.4s ease-in-out infinite alternate; }
+
 #custom-docker         { color: @sky; }
 #custom-docker.off,
 #custom-docker.idle    { color: @overlay; }

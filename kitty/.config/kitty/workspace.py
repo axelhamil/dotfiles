@@ -1,7 +1,10 @@
+import fcntl
+import json
 import os
 import time
 import zlib
-from dataclasses import dataclass
+from contextlib import contextmanager
+from dataclasses import asdict, dataclass, replace
 
 HOME = os.path.expanduser("~")
 
@@ -123,3 +126,96 @@ def locate(cwd: str) -> Location:
 def worst_state(states) -> str:
     present = set(states)
     return next((state for state in STATE_PRIORITY if state in present), "")
+
+
+REGISTRY_DIR = os.path.join(os.environ.get("XDG_RUNTIME_DIR", f"/run/user/{os.getuid()}"), "claude-agents")
+
+
+@dataclass(frozen=True)
+class AgentRecord:
+    session_id: str
+    state: str
+    cwd: str
+    pid: int
+    updated_at: float
+    message: str = ""
+    tmux_session: str = ""
+    tmux_pane: str = ""
+    kitty_socket: str = ""
+    kitty_window: int = 0
+
+    def is_alive(self) -> bool:
+        return self.pid > 0 and os.path.exists(f"/proc/{self.pid}")
+
+
+def record_path(session_id: str) -> str:
+    return os.path.join(REGISTRY_DIR, f"{session_id}.json")
+
+
+@contextmanager
+def record_lock(session_id: str, blocking: bool = True):
+    os.makedirs(REGISTRY_DIR, exist_ok=True)
+
+    with open(os.path.join(REGISTRY_DIR, f"{session_id}.lock"), "w") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX if blocking else fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            yield False
+            return
+        yield True
+
+
+def read_record(path: str) -> AgentRecord | None:
+    try:
+        with open(path) as f:
+            return AgentRecord(**json.load(f))
+    except (OSError, ValueError, TypeError):
+        return None
+
+
+def write_record(record: AgentRecord) -> None:
+    os.makedirs(REGISTRY_DIR, exist_ok=True)
+    path = record_path(record.session_id)
+    temporary = f"{path}.{os.getpid()}.tmp"
+
+    with open(temporary, "w") as f:
+        json.dump(asdict(record), f)
+
+    os.replace(temporary, path)
+
+
+def remove_record(session_id: str) -> None:
+    for path in (record_path(session_id), os.path.join(REGISTRY_DIR, f"{session_id}.lock")):
+        try:
+            os.remove(path)
+        except FileNotFoundError:
+            pass
+
+
+def all_records() -> list[AgentRecord]:
+    try:
+        names = os.listdir(REGISTRY_DIR)
+    except FileNotFoundError:
+        return []
+
+    records = (read_record(os.path.join(REGISTRY_DIR, name)) for name in names if name.endswith(".json"))
+    return [record for record in records if record is not None]
+
+
+def live_records() -> list[AgentRecord]:
+    return [record for record in all_records() if record.is_alive()]
+
+
+def acknowledge_done(socket: str, window_id: int) -> None:
+    for record in live_records():
+        if record.state != "done" or record.kitty_socket != socket or record.kitty_window != window_id:
+            continue
+
+        with record_lock(record.session_id, blocking=False) as acquired:
+            current = read_record(record_path(record.session_id)) if acquired else None
+            if current is not None and current.state == "done":
+                write_record(replace(current, state="idle"))
+
+
+def state_rank(state: str) -> int:
+    return STATE_PRIORITY.index(state) if state in STATE_PRIORITY else len(STATE_PRIORITY)

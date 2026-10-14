@@ -1,5 +1,7 @@
 import json
 import os
+import re
+import shlex
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -7,11 +9,11 @@ from dataclasses import dataclass
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from workspace import (  # noqa: E402
-    CLAUDE_VAR,
     ICON_BRANCH,
     ICON_WORKTREE,
     STATE_COLORS,
     STATE_ICONS,
+    live_records,
     locate,
     worst_state,
 )
@@ -21,12 +23,11 @@ ROOTS = (os.path.join(HOME, "DEV"),)
 EXTRA_REPOS = (os.path.join(HOME, ".dotfiles"),)
 MAX_DEPTH = 3
 SKIPPED_DIRS = {"node_modules", ".git", ".claude", "dist", "build", "target"}
-SESSION_DIRS = (
-    os.path.join(HOME, ".config", "kitty", "sessions"),
-    os.path.join(HOME, ".local", "share", "kitty", "sessions"),
-)
-GENERATED_SESSION_DIR = SESSION_DIRS[1]
+CUSTOM_SESSION_DIR = os.path.join(HOME, ".config", "kitty", "sessions")
+GENERATED_SESSION_DIR = os.path.join(HOME, ".local", "share", "kitty", "sessions")
 AGENT_WORKTREE_PREFIX = "agent-"
+WORKTREE_DIR = ".claude/worktrees"
+BASE_BRANCHES = ("dev", "develop", "main", "master")
 DIM = "\x1b[38;2;108;112;134m"
 RESET = "\x1b[0m"
 
@@ -110,11 +111,22 @@ def is_inside(path: str, root: str) -> bool:
     return path == root or path.startswith(f"{root}/")
 
 
+def tmux_sessions() -> dict[str, str]:
+    result = subprocess.run(["tmux", "list-sessions", "-F", "#{session_name}\t#{session_path}"], capture_output=True, text=True, check=False)
+    return dict(line.split("\t", 1) for line in result.stdout.splitlines() if "\t" in line)
+
+
 def open_states(windows: list[dict]) -> dict[str, list[str]]:
     states: dict[str, list[str]] = {}
 
+    for path in tmux_sessions().values():
+        states.setdefault(path, []).append("open")
+
     for window in windows:
-        states.setdefault(window_cwd(window), []).append(window["user_vars"].get(CLAUDE_VAR, "open"))
+        states.setdefault(window_cwd(window), []).append("open")
+
+    for record in live_records():
+        states.setdefault(record.cwd, []).append(record.state)
 
     return states
 
@@ -143,7 +155,7 @@ def state_for(entry: Entry, states: dict[str, list[str]]) -> str:
 
 def format_entry(entry: Entry, state: str) -> str:
     location = locate(entry.path)
-    marker = ansi(STATE_COLORS[state], STATE_ICONS[state]) if state in STATE_ICONS else ("●" if state else " ")
+    marker = ansi(STATE_COLORS[state], STATE_ICONS[state]) if state in STATE_ICONS else ("\u25cf" if state else " ")
     name = ansi(location.color(), entry.project)
     worktree = f" {ICON_WORKTREE} {entry.worktree}" if entry.worktree else ""
     branch = f"{DIM} {ICON_BRANCH} {location.branch}{RESET}" if location.branch else ""
@@ -160,7 +172,7 @@ def sort_key(entry: Entry, state: str, scores: dict[str, float]):
     return (entry.is_agent(), not state, -scores.get(entry.path, 0.0), entry.project, entry.worktree)
 
 
-def pick(lines: list[str]) -> str:
+def pick(lines: list[str]) -> tuple[str, str]:
     result = subprocess.run(
         [
             "fzf",
@@ -170,27 +182,37 @@ def pick(lines: list[str]) -> str:
             "--no-sort",
             "--layout=reverse",
             "--border=rounded",
-            "--prompt=project ❯ ",
-            "--header=enter: open  ·  ● open  ·  \U000f051f running  ·   waiting  ·   done",
+            "--expect=ctrl-n",
+            "--prompt=project \u276f ",
+            "--header=enter: open  \u00b7  ctrl-n: new task worktree + claude",
         ],
         input="\n".join(lines),
         stdout=subprocess.PIPE,
         text=True,
         check=False,
     )
-    return result.stdout.strip().rpartition("\t")[2]
+    key, _, selection = result.stdout.partition("\n")
+    return key.strip(), selection.strip().rpartition("\t")[2]
 
 
-def session_file(entry: Entry, repo_path: str) -> str:
-    for directory in SESSION_DIRS:
-        candidate = os.path.join(directory, f"{entry.project}.kitty-session")
-        if os.path.isfile(candidate):
-            return candidate
+def tmux_name(entry: Entry) -> str:
+    name = f"{entry.project}-{entry.worktree}" if entry.worktree else entry.project
+    return re.sub(r"[.:]", "_", name)
+
+
+def attach_command(entry: Entry) -> str:
+    return shlex.join(["tmux", "new-session", "-A", "-s", tmux_name(entry), "-c", entry.path])
+
+
+def session_file(entry: Entry, repo: Entry) -> str:
+    custom = os.path.join(CUSTOM_SESSION_DIR, f"{repo.project}.kitty-session")
+    if os.path.isfile(custom):
+        return custom
 
     os.makedirs(GENERATED_SESSION_DIR, exist_ok=True)
-    path = os.path.join(GENERATED_SESSION_DIR, f"{entry.project}.kitty-session")
+    path = os.path.join(GENERATED_SESSION_DIR, f"{repo.project}.kitty-session")
     with open(path, "w") as f:
-        f.write(f"new_tab {entry.project}\nlayout splits\ncd {repo_path}\nlaunch\n")
+        f.write(f"new_tab {repo.project}\nlayout splits\ncd {repo.path}\nlaunch {attach_command(repo)}\n")
     return path
 
 
@@ -198,19 +220,78 @@ def kitten(*args: str) -> None:
     subprocess.run(["kitten", "@", *args], check=False)
 
 
-def open_entry(entry: Entry, entries: list[Entry], windows: list[dict]) -> None:
-    repo_path = next(candidate.path for candidate in entries if candidate.project == entry.project and not candidate.worktree)
-    kitten("action", "goto_session", session_file(entry, repo_path))
+def shows_entry(window: dict, entry: Entry) -> bool:
+    if is_inside(window_cwd(window), entry.path):
+        return True
+
+    command = [arg for process in window.get("foreground_processes") or [] for arg in process.get("cmdline") or []]
+    return "tmux" in os.path.basename(command[0] if command else "") and tmux_name(entry) in command
+
+
+def open_entry(entry: Entry, repo: Entry, windows: list[dict]) -> None:
+    kitten("action", "goto_session", session_file(entry, repo))
 
     if not entry.worktree:
         return
 
-    existing = next((window for window in windows if is_inside(window_cwd(window), entry.path)), None)
+    existing = next((window for window in windows if shows_entry(window, entry)), None)
     if existing:
         kitten("focus-window", "--match", f"id:{existing['id']}")
         return
 
-    kitten("launch", "--type=tab", f"--cwd={entry.path}", f"--add-to-session={entry.project}")
+    kitten("launch", "--type=tab", f"--cwd={entry.path}", f"--add-to-session={repo.project}", *shlex.split(attach_command(entry)))
+
+
+def slugify(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+
+def git(repo: str, *args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", "-C", repo, *args], capture_output=True, text=True, check=False)
+
+
+def base_branch(repo: str) -> str:
+    return next((branch for branch in BASE_BRANCHES if git(repo, "rev-parse", "--verify", "--quiet", f"refs/heads/{branch}").returncode == 0), "HEAD")
+
+
+def exclude_worktrees(repo: str) -> None:
+    exclude = os.path.join(repo, ".git", "info", "exclude")
+    pattern = f"/{WORKTREE_DIR}/"
+
+    try:
+        with open(exclude) as f:
+            if pattern in f.read().splitlines():
+                return
+    except FileNotFoundError:
+        os.makedirs(os.path.dirname(exclude), exist_ok=True)
+
+    with open(exclude, "a") as f:
+        f.write(f"\n{pattern}\n")
+
+
+def create_task(repo: Entry) -> Entry | None:
+    task = slugify(input(f"New task in {repo.project} (feat/<name>): "))
+    if not task:
+        return None
+
+    path = os.path.join(repo.path, WORKTREE_DIR, task)
+    base = base_branch(repo.path)
+    created = git(repo.path, "worktree", "add", "-b", f"feat/{task}", path, base)
+
+    if created.returncode != 0:
+        print(created.stderr.strip())
+        input()
+        return None
+
+    exclude_worktrees(repo.path)
+    entry = Entry(path, repo.project, task)
+    session = tmux_name(entry)
+    if subprocess.run(["tmux", "has-session", "-t", f"={session}"], capture_output=True, check=False).returncode == 0:
+        return entry
+
+    subprocess.run(["tmux", "new-session", "-d", "-s", session, "-c", path], check=False)
+    subprocess.run(["tmux", "send-keys", "-t", f"={session}:", "claude", "Enter"], check=False)
+    return entry
 
 
 def main() -> None:
@@ -222,11 +303,18 @@ def main() -> None:
     entry_states = {entry: state_for(entry, states) for entry in entries}
     entries.sort(key=lambda entry: sort_key(entry, entry_states[entry], scores))
 
-    chosen_path = pick([format_entry(entry, entry_states[entry]) for entry in entries])
+    key, chosen_path = pick([format_entry(entry, entry_states[entry]) for entry in entries])
     chosen = next((entry for entry in entries if entry.path == chosen_path), None)
+    if chosen is None:
+        return
 
-    if chosen:
-        open_entry(chosen, entries, windows)
+    repo = next(entry for entry in entries if entry.project == chosen.project and not entry.worktree)
+    if key == "ctrl-n":
+        chosen = create_task(repo)
+        if chosen is None:
+            return
+
+    open_entry(chosen, repo, windows)
 
 
 if __name__ == "__main__":

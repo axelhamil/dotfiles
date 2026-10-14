@@ -1,8 +1,14 @@
+import os
+import sys
 from typing import Any
 
 from kitty.boss import Boss
 from kitty.fast_data_types import current_focused_os_window_id
 from kitty.window import Window
+
+sys.path.insert(0, os.path.dirname(__file__))
+
+from workspace import acknowledge_done  # noqa: E402
 
 CLAUDE_VAR = "claude"
 
@@ -16,9 +22,12 @@ def is_seen(boss: Boss, window: Window) -> bool:
     return boss.active_window is window and current_focused_os_window_id() == window.os_window_id
 
 
-def mark_seen(window: Window) -> None:
-    if window.user_vars.get(CLAUDE_VAR) == "done":
-        window.set_user_var(CLAUDE_VAR, "idle")
+def mark_seen(boss: Boss, window: Window) -> None:
+    if window.user_vars.get(CLAUDE_VAR) != "done":
+        return
+
+    acknowledge_done(boss.listening_on, window.id)
+    window.set_user_var(CLAUDE_VAR, "idle")
 
 
 def on_set_user_var(boss: Boss, window: Window, data: dict[str, Any]) -> None:
@@ -26,14 +35,14 @@ def on_set_user_var(boss: Boss, window: Window, data: dict[str, Any]) -> None:
         return
 
     if is_seen(boss, window):
-        mark_seen(window)
+        mark_seen(boss, window)
 
     redraw_tab_bars(boss)
 
 
 def on_focus_change(boss: Boss, window: Window, data: dict[str, Any]) -> None:
     if data["focused"]:
-        mark_seen(window)
+        mark_seen(boss, window)
 
 
 def on_close(boss: Boss, window: Window, data: dict[str, Any]) -> None:

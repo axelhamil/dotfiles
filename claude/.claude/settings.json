@@ -84,7 +84,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/axel/.claude/hooks/kitty-state.sh running"
+            "command": "python3 /home/axel/.config/kitty/scripts/agent_state.py running"
           }
         ]
       }
@@ -94,11 +94,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/axel/.claude/hooks/stop-notify.sh"
-          },
-          {
-            "type": "command",
-            "command": "/home/axel/.claude/hooks/kitty-state.sh done"
+            "command": "python3 /home/axel/.config/kitty/scripts/agent_state.py done"
           }
         ]
       }
@@ -113,6 +109,14 @@
           {
             "type": "command",
             "command": "/usr/local/bin/icm hook start"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /home/axel/.config/kitty/scripts/agent_state.py idle"
           }
         ]
       }
@@ -152,7 +156,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/axel/.claude/hooks/kitty-state.sh running"
+            "command": "python3 /home/axel/.config/kitty/scripts/agent_state.py running"
           }
         ]
       }
@@ -163,7 +167,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/axel/.claude/hooks/kitty-state.sh waiting"
+            "command": "python3 /home/axel/.config/kitty/scripts/agent_state.py waiting"
           }
         ]
       }
@@ -173,7 +177,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/axel/.claude/hooks/kitty-state.sh clear"
+            "command": "python3 /home/axel/.config/kitty/scripts/agent_state.py clear"
           }
         ]
       }

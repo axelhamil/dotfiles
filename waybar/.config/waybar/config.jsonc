@@ -20,6 +20,7 @@
     "modules-center": ["clock"],
     "modules-right": [
       "group/hardware",
+      "custom/claude",
       "custom/docker",
       "custom/updates",
       "custom/obs",
@@ -50,6 +51,7 @@
     "modules-center": ["clock"],
     "modules-right": [
       "group/hardware",
+      "custom/claude",
       "custom/docker",
       "custom/updates",
       "custom/obs",

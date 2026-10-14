@@ -13,9 +13,9 @@ Personal configuration for my Arch Linux + Hyprland environment.
 |---------|-------------|
 | `zsh` | ZSH config (powerlevel10k, aliases, PATH, NVM) |
 | `git` | Git config (SSH signing, pull rebase) |
-| `tmux` | Tmux config (Catppuccin Mocha, vim-style nav) |
+| `tmux` | Tmux, persistence layer for project sessions (status hidden, Claude state on pane borders) |
 | `p10k` | Powerlevel10k theme config |
-| `kitty` | Kitty terminal: project/worktree/branch tab bar, Claude agent states, per-project sessions |
+| `kitty` | Kitty terminal: project/worktree/branch tab bar, Claude agent registry, project and agent pickers, Waybar module |
 | `hypr` | Hyprland, hypridle, hyprlock, hyprpaper |
 | `waybar` | Status bar config + scripts |
 | `dunst` | Notification daemon |

@@ -28,8 +28,21 @@ def claude_state(tab) -> str:
     return worst_state(window.user_vars.get(CLAUDE_VAR, "") for window in tab)
 
 
+def runs_tmux(window) -> bool:
+    argv = window.child.argv or [""]
+    return os.path.basename(argv[0]) == "tmux"
+
+
+def tab_cwd(tab) -> str:
+    window = tab.active_window
+    if window is not None and runs_tmux(window) and window.title.startswith("/"):
+        return window.title
+
+    return tab.get_cwd_of_active_window(oldest=True) or ""
+
+
 def tab_location(tab):
-    return locate(tab.get_cwd_of_active_window(oldest=True) or "")
+    return locate(tab_cwd(tab))
 
 
 def build_title(tab, location, index: int, is_active: bool, inactive_fg: int) -> str:
