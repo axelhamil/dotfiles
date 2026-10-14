@@ -79,6 +79,14 @@
             "command": "/usr/local/bin/icm hook post"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/axel/.claude/hooks/kitty-state.sh running"
+          }
+        ]
       }
     ],
     "Stop": [
@@ -87,6 +95,10 @@
           {
             "type": "command",
             "command": "/home/axel/.claude/hooks/stop-notify.sh"
+          },
+          {
+            "type": "command",
+            "command": "/home/axel/.claude/hooks/kitty-state.sh done"
           }
         ]
       }
@@ -131,6 +143,37 @@
           {
             "type": "command",
             "command": "/usr/local/bin/icm hook pre"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/axel/.claude/hooks/kitty-state.sh running"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt|elicitation_dialog",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/axel/.claude/hooks/kitty-state.sh waiting"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/axel/.claude/hooks/kitty-state.sh clear"
           }
         ]
       }

@@ -15,7 +15,7 @@ Personal configuration for my Arch Linux + Hyprland environment.
 | `git` | Git config (SSH signing, pull rebase) |
 | `tmux` | Tmux config (Catppuccin Mocha, vim-style nav) |
 | `p10k` | Powerlevel10k theme config |
-| `kitty` | Kitty terminal (FiraCode Nerd Font) |
+| `kitty` | Kitty terminal: project/worktree/branch tab bar, Claude agent states, per-project sessions |
 | `hypr` | Hyprland, hypridle, hyprlock, hyprpaper |
 | `waybar` | Status bar config + scripts |
 | `dunst` | Notification daemon |
